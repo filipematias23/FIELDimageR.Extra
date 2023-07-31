@@ -42,10 +42,25 @@ devtools::install_github("filipematias23/FIELDimageR.Extra")
 
 <br />
 
+> If the method above doesn't work, use the next lines by downloading the FIELDimageR-master.zip file
+
 ```r
-install.packages("devtools")
-devtools::install_github("filipematias23/FIELDimageR.Extra")
+setwd("~/FIELDimageR.Extra-main.zip") # ~ is the path from where you saved the file.zip
+unzip("FIELDimageR.Extra-main.zip") 
+file.rename("FIELDimageR.Extra-main", "FIELDimageR.Extra") 
+shell("R CMD build FIELDimageR.Extra") # or system("R CMD build FIELDimageR.Extra")
+install.packages("FIELDimageR.Extra_0.0.1.tar.gz", repos = NULL, type="source") # Make sure to use the right version (e.g. 0.0.1)
 ```
+<br />
+
+> The image below from **R/FIELDimageR** is highlighting how to do the steps described above and install **R/FIELDimageR.Extra** using source code.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Install.jpg" width="50%" height="50%">
+</p>
+
+<br />
+
 
 [Menu](#menu)
 
