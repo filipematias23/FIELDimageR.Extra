@@ -12,7 +12,9 @@
 ## Resources
   
    * [Installation](#Instal)
+     
    * [1. First steps](#P1)
+     
    * [2. Loading mosaics and visualizing](#P2)
    * [3. Building the plot shapefile (Zoom)](#P3)
    * [4. Editing the plot shapefile (Zoom)](#P4)
