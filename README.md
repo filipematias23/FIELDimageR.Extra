@@ -3,7 +3,7 @@
 > This package was developed by [Popat Pawar](https://www.linkedin.com/in/dr-popat-pawar-204bb136/) and [Filipe Matias](https://www.linkedin.com/in/filipe-matias-27bab5199/) to help **FIELDimageR** users with new functions to analyze orthomosaic images from research fields. Cropping and rotating images are not necessary anymore, and there are amazing zoom capabilities provided by newly released GIS R packages. Come along with us and try this tutorial out ... We hope it helps with your research!
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/FIELDimageR.jpg" width="70%" height="70%">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/FIELDimageR_Extra.jpg" width="70%" height="70%">
 </p>
 
 <div id="menu" />
