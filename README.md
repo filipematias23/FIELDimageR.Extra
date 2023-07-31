@@ -15,15 +15,23 @@
      
 [1. First steps](#P1)
      
-   * [2. Loading mosaics and visualizing](#P2)
-   * [3. Building the plot shapefile (Zoom)](#P3)
-   * [4. Editing the plot shapefile (Zoom)](#P4)
-   * [5. Building vegetation indices and removing the soil effect](#P5)
-   * [6. Extracting data from field images](#P6)
-   * [7. Vizualizing extracted data](#P7)
-   * [8. Saving output files and opening them in the QGIS](#P8) 
-   * [9. Cropping individual plots and saving](#P9)
-   * [Contact](#contact)
+[2. Loading mosaics and visualizing](#P2)
+
+[3. Building the plot shapefile (Zoom)](#P3)
+
+[4. Editing the plot shapefile (Zoom)](#P4)
+
+[5. Building vegetation indices and removing the soil effect](#P5)
+
+[6. Extracting data from field images](#P6)
+
+[7. Vizualizing extracted data](#P7)
+
+[8. Saving output files and opening them in the QGIS](#P8) 
+
+[9. Cropping individual plots and saving](#P9)
+
+[Contact](#contact)
 
 <div id="Instal" />
 
