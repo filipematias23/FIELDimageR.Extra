@@ -319,6 +319,7 @@ fieldView(single_layer,
           type = 2,
           alpha_grid = 0.2)  
 ```
+
 <br />
 
 <p align="center">
@@ -387,6 +388,7 @@ fieldView(mosaic = Test.RemSoil$newMosaic,
           type = 2,
           alpha_grid = 0.6)
 ```
+
 <br />
 
 <p align="center">
@@ -394,6 +396,7 @@ fieldView(mosaic = Test.RemSoil$newMosaic,
 </p>
 
 <br />
+
 ```r
 # Applying different color schemes to paint plots in the fieldShape file. An example using extracted values for 'BGI': 
 fieldView(mosaic = Test.RemSoil$newMosaic,
@@ -403,6 +406,7 @@ fieldView(mosaic = Test.RemSoil$newMosaic,
           type = 2,
           alpha_grid = 0.6)
 ```
+
 <br />
 
 <p align="center">
