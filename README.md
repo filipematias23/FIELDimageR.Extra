@@ -102,6 +102,7 @@ library(stars)
 > The following example uses an image available to download here: [EX1_RGB.tif](https://drive.google.com/open?id=1S9MyX12De94swjtDuEXMZKhIIHbXkXKt). The first R/FIELDimageR.Extra function is **`fieldView`** used to visualize GIS images and grid shapefiles and zoom it out.
 
 ```r
+
 # Uploading an example mosaic
 Test <- rast("EX1_RGB.tif")
 
@@ -119,6 +120,7 @@ fieldView(Test)
 <br />
 
 ```r
+
 # Visualization Option-02 (raster):
 plotRGB(Test)
 
@@ -175,6 +177,7 @@ plotShape<-fieldShape_render(mosaic = Test,
 # Reading DataTable.csv
 DataTable<-read.csv("DataTable.csv",header = T)
 ```
+
 <br />
 
 <p align="center">
@@ -182,8 +185,11 @@ DataTable<-read.csv("DataTable.csv",header = T)
 </p>
 
 <br />
+
 ```r
+
 ### Field map identification (name for each Plot). 'fieldPlot' argument can be a number or name.
+
 fieldMap<-fieldMap(fieldPlot=DataTable$Plot, fieldColumn=DataTable$Row, fieldRow=DataTable$Range, decreasing=T)
 fieldMap
 
@@ -194,6 +200,7 @@ plotShape<-fieldShape_render(mosaic = Test,
                              fieldMap = fieldMap,
                              buffer = -0.05)
 ```
+
 <br />
 
 <p align="center">
