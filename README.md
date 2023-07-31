@@ -380,6 +380,21 @@ DataTotal
 > There are different ways to use the function **`fieldView`** to visualize and interpret extracted data.  
 
 ```r
+# Visualizing single layer vegetation index 'BGI': 
+fieldView(mosaic = Test.RemSoil$newMosaic,
+          fieldShape = DataTotal,
+          plotCol = "BGI",
+          type = 2,
+          alpha_grid = 0.6)
+```
+<br />
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex14a.jpg">
+</p>
+
+<br />
+```r
 # Applying different color schemes to paint plots in the fieldShape file. An example using extracted values for 'BGI': 
 fieldView(mosaic = Test.RemSoil$newMosaic,
           fieldShape = DataTotal,
