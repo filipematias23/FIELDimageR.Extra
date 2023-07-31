@@ -72,7 +72,7 @@ install.packages("FIELDimageR.Extra_0.0.1.tar.gz", repos = NULL, type="source") 
 
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex0.jpg" >
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex0.jpg" width="80%" height="80%">
 </p>
 
 
@@ -114,7 +114,7 @@ fieldView(Test)
 <br />
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex1.jpg">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex1.jpg" width="80%" height="80%">
 </p>
 
 <br />
@@ -128,7 +128,7 @@ plotRGB(Test)
 <br />
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex2.jpg">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex2.jpg" width="80%" height="80%">
 </p>
 
 <br />
@@ -143,7 +143,7 @@ plotRGB(Test)
 > FIELDimageR.Extra allows drawing the plot shape file using the function **`fieldShape_render`**. Different from **`FIELDimageR::fieldShape`** this new function does not request straight fields and the experimental trial can be used in any direction according to the original GIS position. It is very important to highlight that **four points** need to be set at the corners of the trial according to the following sequence (1st point) left superior corner, (2nd point) right superior corner, (3rd point) right inferior corner, and (4th point) left inferior corner. The mosaic will be presented for visualization with the North part on the superior part (top) and the south in )the inferior part (bottom). The number of columns and rows must be informed. At this point, the experimental borders can be eliminated (check the example below. 
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex4.jpg">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex4.jpg" width="70%" height="70%">
 </p>
 
 ```r
@@ -166,7 +166,7 @@ plotShape<-fieldShape_render(mosaic = Test,
 <br />
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex5.jpg">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex5.jpg" width="60%" height="60%">
 </p>
 
 <br />
@@ -176,12 +176,13 @@ plotShape<-fieldShape_render(mosaic = Test,
 ```r
 # Reading DataTable.csv
 DataTable<-read.csv("DataTable.csv",header = T)
+DataTable
 ```
 
 <br />
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex6.jpg">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex6.jpg" width="60%" height="60%">
 </p>
 
 <br />
@@ -204,7 +205,7 @@ plotShape<-fieldShape_render(mosaic = Test,
 <br />
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex7.jpg">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex7.jpg" width="60%" height="60%">
 </p>
 
 <br />
@@ -234,7 +235,7 @@ fieldView(mosaic = Test,
 <br />
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex8.jpg">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex8.jpg" width="80%" height="80%">
 </p>
 
 <br />
@@ -284,7 +285,7 @@ fieldView(mosaic = Test,
 <br />
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex9.jpg">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex9.jpg" width="60%" height="60%">
 </p>
 
 <br />
@@ -365,7 +366,7 @@ fieldView(Test.RemSoil$newMosaic,
 <br />
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex12.jpg">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex12.jpg" width="80%" height="80%">
 </p>
 
 <br />
@@ -414,7 +415,7 @@ fieldView(mosaic = Test.RemSoil$newMosaic,
 <br />
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex14a.jpg">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex14a.jpg" width="80%" height="80%">
 </p>
 
 <br />
@@ -432,7 +433,7 @@ fieldView(mosaic = Test.RemSoil$newMosaic,
 <br />
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex14.jpg">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex14.jpg" width="80%" height="80%">
 </p>
 
 <br />
@@ -447,7 +448,7 @@ fieldView(mosaic = Test.RemSoil$newMosaic,
 <br />
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex15.jpg">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex15.jpg" width="70%" height="70%">
 </p>
 
 <br />
@@ -462,7 +463,7 @@ fieldView(mosaic = Test.RemSoil$newMosaic,
 <br />
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex16.jpg">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex16.jpg" width="80%" height="80%">
 </p>
 
 <br />
@@ -508,7 +509,7 @@ Saved_Grid= st_read("grid.shp")
 <br />
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex20.jpg">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex20.jpg" width="80%" height="80%">
 </p>
 
 <br />
@@ -539,7 +540,7 @@ fieldView(Field_plot_grids$'21')
 <br />
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex18.jpg">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex18.jpg" width="80%" height="80%">
 </p>
 
 <br />
@@ -563,7 +564,7 @@ fieldView(mosaic = tif,
 <br />
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex19.jpg">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex19.jpg" width="60%" height="60%">
 </p>
 
 <br />
