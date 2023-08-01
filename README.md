@@ -13,7 +13,7 @@
   
 [Installation](#Instal)
      
-[1. First steps](#P1)
+[Step 1. First steps](#P1)
      
 [2. Loading mosaics and visualizing](#P2)
 
