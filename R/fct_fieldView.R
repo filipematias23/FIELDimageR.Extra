@@ -15,6 +15,7 @@
 #' @param col_grid grid color options similar to 'col.regions' parameter in 'mapview'.
 #' @param alpha_grid transparency with values between 0 and 1.
 #' @param seq_grid color classes similar to 'at' parameter in 'mapview'.
+#' @param downsample  numeric downsample reduction factor. Default = 5.
 #' 
 #' @importFrom sf st_crs st_bbox st_transform st_is_longlat st_crop 
 #' @importFrom terra crop nlyr rast
@@ -42,7 +43,8 @@ fieldView <- function(mosaic = NULL,
                       colorOptions = viridisLite::viridis,
                       col_grid = viridisLite::viridis,
                       alpha_grid = 1,
-                      seq_grid = NULL) {
+                      seq_grid = NULL,
+                      downsample = 5) {
   print("Starting analysis ...")
   
   if (is.null(mosaic)) {
@@ -72,7 +74,7 @@ fieldView <- function(mosaic = NULL,
       stars_object <- st_as_stars(mosaic)
       names(stars_object)<-"layer_name"
       stars_object <- read_stars(stars_object$layer_name, proxy = TRUE)
-      stars_object <- st_downsample(stars_object, n = 5)
+      stars_object <- st_downsample(stars_object, n = downsample)
     }
   }
   

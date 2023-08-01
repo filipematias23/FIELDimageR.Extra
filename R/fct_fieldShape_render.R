@@ -16,7 +16,8 @@
 #' @param g green layer in the mosaic (for RGB image normally is 2). If NULL the first single layer will be plotted.
 #' @param b blue layer in the mosaic (for RGB image normally is 3). If NULL the first single layer will be plotted.
 #' @param color_options single layer coloring options. Check more information at \code{\link{color_options}} from \code{\link{leafem}} package.
-#' 
+#' @param downsample  numeric downsample reduction factor. Default = 5.
+#'  
 #' @importFrom sf st_crs st_bbox st_transform st_is_longlat st_crop st_make_grid st_cast st_coordinates st_buffer st_sf
 #' @importFrom terra crop nlyr rast
 #' @importFrom stars write_stars st_warp st_as_stars 
@@ -38,7 +39,8 @@ fieldShape_render<- function(mosaic,
                              r=1,
                              g=2,
                              b=3,
-                             color_options=NULL
+                             color_options=NULL,
+                             downsample=5
                              ) {
   print("Starting analysis ...")
   pixels <- prod(dim(mosaic))
@@ -60,7 +62,7 @@ fieldShape_render<- function(mosaic,
       stars_object <- st_as_stars(mosaic)
       names(stars_object)<-"layer_name"
       stars_object <- read_stars(stars_object$layer_name, proxy = TRUE)
-      stars_object <- st_downsample(stars_object, n = 5)
+      stars_object <- st_downsample(stars_object, n = downsample)
     }
       }
 
