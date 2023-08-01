@@ -43,6 +43,13 @@ fieldShape_render<- function(mosaic,
                              downsample=5
                              ) {
   print("Starting analysis ...")
+  if (is.null(mosaic)) {
+    stop("The input 'mosaic' object is NULL.")
+  }
+  
+  if(class(mosaic)%in%c("RasterStack","RasterLayer","RasterBrick")){
+    mosaic<-terra::rast(mosaic)
+  }
   pixels <- prod(dim(mosaic))
   max_pixels <- 200000000  
   if(pixels > max_pixels){
