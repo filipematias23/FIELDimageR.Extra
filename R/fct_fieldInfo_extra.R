@@ -30,10 +30,6 @@ fieldInfo_extra <- function(mosaic,
     stop("The input 'mosaic' object is NULL.")
   }
   
-  if(class(mosaic)%in%c("RasterStack","RasterLayer","RasterBrick")){
-    mosaic<-terra::rast(mosaic)
-  }
-  
   stars_object<-mosaic
   if(!class(stars_object)=="stars"){stars_object<-st_as_stars(rast(mosaic))}
   fieldShape_utm <- st_transform(fieldShape, st_crs(stars_object))
