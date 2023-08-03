@@ -11,29 +11,29 @@
 ---------------------------------------------
 ## Resources
   
-[Installation](#Instal)
+[Installation](#instal)
      
-[Step 1. How to start?](#P1)
+[Step 1. How to start?](#p1)
      
-[Step 2. Loading mosaics and visualizing](#P2)
+[Step 2. Loading mosaics and visualizing](#p2)
 
-[Step 3. Building the plot shapefile (Zoom)](#P3)
+[Step 3. Building the plot shapefile (Zoom)](#p3)
 
-[Step 4. Editing the plot shapefile (Zoom)](#P4)
+[Step 4. Editing the plot shapefile (Zoom)](#p4)
 
-[Step 5. Building vegetation indices and removing the soil effect](#P5)
+[Step 5. Building vegetation indices and removing the soil effect](#p5)
 
 [Step 6. Extracting data from field images](#p6)
 
-[Step 7. Vizualizing extracted data](#P7)
+[Step 7. Vizualizing extracted data](#p7)
 
-[Step 8. Saving output files and opening them in the QGIS](#P8) 
+[Step 8. Saving output files and opening them in the QGIS](#p8) 
 
 [Step 9. Cropping individual plots and saving](#p9)
 
 [Contact](#contact)
 
-<div id="Instal" />
+<div id="instal" />
 
 ---------------------------------------------
 ### Installation
@@ -74,7 +74,7 @@ install.packages("FIELDimageR.Extra_0.0.1.tar.gz", repos = NULL, type="source") 
 
 [Menu](#menu)
 
-<div id="P1" />
+<div id="p1" />
 
 ---------------------------------------------
 
@@ -104,7 +104,7 @@ library(stars)
 ```
 [Menu](#menu)
 
-<div id="P2" />
+<div id="p2" />
 
 ---------------------------------------------
 #### 2. Loading mosaics and visualizing
@@ -145,7 +145,7 @@ plotRGB(Test)
 
 [Menu](#menu)
 
-<div id="P3" />
+<div id="p3" />
 
 ---------------------------------------------
 #### 3. Building the plot shapefile (Zoom)
@@ -302,7 +302,7 @@ fieldView(mosaic = Test,
 
 [Menu](#menu)
 
-<div id="P4" />
+<div id="p4" />
 
 ---------------------------------------------
 #### 4. Editing plot shapefile (Zoom) 
@@ -331,7 +331,7 @@ fieldView(mosaic = Test,
 
 [Menu](#menu)
 
-<div id="P5" />
+<div id="p5" />
 
 ---------------------------------------------
 #### 5. Building vegetation indices and removing the soil effect
@@ -406,7 +406,7 @@ DataTotal
 
 [Menu](#menu)
 
-<div id="P7" />
+<div id="p7" />
 
 ---------------------------------------------
 #### 7. Vizualizing extracted data
@@ -497,7 +497,7 @@ sync(m1,m2,m3,m4)
 
 [Menu](#menu)
 
-<div id="P8" />
+<div id="p8" />
 
 ---------------------------------------------
 #### 8. Saving output files and opening them in the QGIS
