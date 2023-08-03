@@ -23,13 +23,13 @@
 
 [Step 5. Building vegetation indices and removing the soil effect](#P5)
 
-[Step 6. Extracting data from field images](#P6)
+[Step 6. Extracting data from field images](#p6)
 
 [Step 7. Vizualizing extracted data](#P7)
 
 [Step 8. Saving output files and opening them in the QGIS](#P8) 
 
-[Step 9. Cropping individual plots and saving](#P9)
+[Step 9. Cropping individual plots and saving](#p9)
 
 [Contact](#contact)
 
@@ -383,7 +383,7 @@ fieldView(Test.RemSoil$newMosaic,
 
 [Menu](#menu)
 
-<div id="P6" />
+<div id="p6" />
 
 ---------------------------------------------
 #### 6. Extracting data from field images 
@@ -526,7 +526,7 @@ Saved_Grid= st_read("grid.shp")
 
 [Menu](#menu)
 
-<div id="P9" />
+<div id="p9" />
 
 ---------------------------------------------
 #### 9. Cropping individual plots and saving
