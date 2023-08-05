@@ -11,7 +11,7 @@
 #' @param r red layer in the mosaic (for RGB image normally is 1). If NULL the first single layer will be plotted. 
 #' @param g green layer in the mosaic (for RGB image normally is 2). If NULL the first single layer will be plotted.
 #' @param b blue layer in the mosaic (for RGB image normally is 3). If NULL the first single layer will be plotted.
-#' @param colorOptions single layer coloring options. Check more information at \code{\link{colorOptions}} from \code{\link{leafem}} package.
+#' @param colorOptions single layer coloring options. Check more information at \code{\link{colorOptions}} from \code{\link{leafem}} package (check for 'palette').
 #' @param col_grid grid color options similar to 'col.regions' parameter in 'mapview'.
 #' @param alpha_grid transparency with values between 0 and 1.
 #' @param seq_grid color classes similar to 'at' parameter in 'mapview'.
@@ -87,10 +87,9 @@ fieldView <- function(mosaic = NULL,
         sf_end <- m1
         gc()
       } else if (nlyr(mosaic) == 1) {
-        if (nlyr(mosaic) == 1) colorOptions = colorOptions
         stars_object[is.na(stars_object)] <- NA
         m1 <- mapview() %>%
-          leafem:::addGeoRaster(x = stars_object, colorOptions = colorOptions) %>%
+          leafem:::addGeoRaster(x = stars_object, colorOptions = leafem:::colorOptions(palette = colorOptions, na.color = "transparent")) %>%
           addImageQuery(x = stars_object, type = "mousemove", digits = 2, layerId = names(mosaic)) %>%
           addLayersControl(overlayGroups = names(mosaic))
         sf_end <- m1
