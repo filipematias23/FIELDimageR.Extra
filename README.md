@@ -350,7 +350,14 @@ single_layer<-Test.Indices$GLI
 fieldView(single_layer,
           fieldShape = editShape,
           type = 2,
-          alpha_grid = 0.2)  
+          alpha_grid = 0.2)
+
+fieldView(single_layer,
+          fieldShape = editShape,
+          plotCol = c("Yield"),
+          colorOptions = 'RdYlGn',
+          type = 1,
+          alpha_grid = 0.8)
 ```
 
 <br />
