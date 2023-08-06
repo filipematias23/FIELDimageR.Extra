@@ -1,4 +1,4 @@
-#' fieldInfo 
+#' fieldInfo_extra 
 #' 
 #' @title Extract information from image using the fieldShape file as reference
 #' 
@@ -8,11 +8,6 @@
 #' @param mosaic object of class stack.
 #' @param fieldShape plot shape file, please use first the function \code{\link{fieldShape}}. 
 #' @param fun to summarize the values (e.g. mean).
-#' @param plot if is TRUE the original and crop image will be plotted.
-#' @param buffer negative values should be used to remove boundaries from neighbor plot 
-#'  (normally the unit is meters, please use values as 0.1 = 10 cm). 
-#' @param n.core number of cores to use for multicore processing (Parallel).
-#' @param projection if is FALSE projection will be ignored.
 #' 
 #' @importFrom sf st_crs st_transform st_as_sf st_join
 #' @importFrom terra rast
