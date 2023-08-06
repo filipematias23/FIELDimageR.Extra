@@ -15,7 +15,7 @@
 #' @param col_grid grid color options similar to 'col.regions' parameter in 'mapview'.
 #' @param alpha_grid transparency with values between 0 and 1.
 #' @param seq_grid color classes similar to 'at' parameter in 'mapview'.
-#' @param max_pixels maximun pixels allowed before down sampling. Reducing size to accelerate analysis. Default = 200000000.
+#' @param max_pixels maximun pixels allowed before down sampling. Reducing size to accelerate analysis. Default = 100000000.
 #' @param downsample  numeric downsample reduction factor. Default = 5.
 #' 
 #' @importFrom sf st_crs st_bbox st_transform st_is_longlat st_crop 
@@ -45,7 +45,7 @@ fieldView <- function(mosaic = NULL,
                       col_grid = viridisLite::viridis,
                       alpha_grid = 1,
                       seq_grid = NULL,
-                      max_pixels = 200000000,
+                      max_pixels = 100000000,
                       downsample = 5) {
   print("Starting analysis ...")
   
