@@ -10,26 +10,24 @@
 #' @param fun to summarize the values (e.g. mean).
 #' 
 #' @importFrom sf st_crs st_transform st_as_sf st_join
-#' @importFrom terra rast
+#' @importFrom terra rast extract
 #' @importFrom stars write_stars st_warp st_as_stars st_extract
 #' 
 #' @return A data frame class "sf" with values by plot.
 #'
 #' @export
-fieldInfo_extra <- function(mosaic, 
-                            fieldShape, 
-                            fun = mean) { 
-  print("Starting extraction ...")
-  
+fieldInfo_extra <- function(mosaic,
+                            fieldShape,
+                            fun = mean) {
+  print("Starting extracting ...")
   if (is.null(mosaic)) {
     stop("The input 'mosaic' object is NULL.")
   }
-  
-  stars_object<-mosaic
-  if(!class(stars_object)=="stars"){stars_object<-st_as_stars(mosaic)}
-  fieldShape_utm <- st_transform(fieldShape, st_crs(stars_object))
-  plotInfo <- st_as_sf(aggregate(stars_object, fieldShape_utm, FUN = fun, na.rm = TRUE))
-  Out<-st_join(fieldShape_utm, st_as_sf(plotInfo))
+  if(class(mosaic)%in%c("RasterStack","RasterLayer","RasterBrick")){
+    mosaic<-terra::rast(mosaic)
+  }
+  plotInfo <- terra::extract(mosaic, fieldShape, fun = fun, na.rm = TRUE)
+  Out<-merge(fieldShape, plotInfo,by=c("ID"))
   print("End!")
   return(Out)
 }
