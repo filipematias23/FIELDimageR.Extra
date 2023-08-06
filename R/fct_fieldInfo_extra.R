@@ -31,7 +31,7 @@ fieldInfo_extra <- function(mosaic,
   }
   
   stars_object<-mosaic
-  if(!class(stars_object)=="stars"){stars_object<-st_as_stars(rast(mosaic))}
+  if(!class(stars_object)=="stars"){stars_object<-st_as_stars(mosaic)}
   fieldShape_utm <- st_transform(fieldShape, st_crs(stars_object))
   plotInfo <- st_as_sf(aggregate(stars_object, fieldShape_utm, FUN = fun, na.rm = TRUE))
   Out<-st_join(fieldShape_utm, st_as_sf(plotInfo))
