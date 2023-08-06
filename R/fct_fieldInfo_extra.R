@@ -19,7 +19,7 @@
 fieldInfo_extra <- function(mosaic, 
                             fieldShape, 
                             fun = mean) { 
-  print("Starting extracting ...")
+  print("Starting extraction ...")
   
   if (is.null(mosaic)) {
     stop("The input 'mosaic' object is NULL.")
