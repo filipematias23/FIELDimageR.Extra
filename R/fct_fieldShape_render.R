@@ -16,6 +16,7 @@
 #' @param g green layer in the mosaic (for RGB image normally is 2). If NULL the first single layer will be plotted.
 #' @param b blue layer in the mosaic (for RGB image normally is 3). If NULL the first single layer will be plotted.
 #' @param color_options single layer coloring options. Check more information at \code{\link{color_options}} from \code{\link{leafem}} package.
+#' @param max_pixels maximun pixels allowed before down sampling. Reducing size to accelerate analysis. Default = 200000000.
 #' @param downsample  numeric downsample reduction factor. Default = 5.
 #'  
 #' @importFrom sf st_crs st_bbox st_transform st_is_longlat st_crop st_make_grid st_cast st_coordinates st_buffer st_sf
@@ -40,6 +41,7 @@ fieldShape_render<- function(mosaic,
                              g=2,
                              b=3,
                              color_options=NULL,
+                             max_pixels=200000000,
                              downsample=5
                              ) {
   print("Starting analysis ...")
@@ -51,7 +53,6 @@ fieldShape_render<- function(mosaic,
     mosaic<-terra::rast(mosaic)
   }
   pixels <- prod(dim(mosaic))
-  max_pixels <- 200000000  
   if(pixels > max_pixels){
     print("Your 'mosaic' is too large and downsapling is being applied.")
   }
