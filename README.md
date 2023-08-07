@@ -620,7 +620,7 @@ fieldView(mosaic = tif,
 
 ### Citation
 
-*Pawar P & Matias FI.* FIELDimageR.Extra. (2023) (Submited)
+* Pawar P & Matias FI.* FIELDimageR.Extra. (2023) (Submitted)
 
 * *Matias FI, Caraza-Harter MV, Endelman JB.* FIELDimageR: An R package to analyze orthomosaic images from agricultural field trials. **The Plant Phenome J.** 2020; [https://doi.org/10.1002/ppj2.20005](https://doi.org/10.1002/ppj2.20005)
 
@@ -643,6 +643,8 @@ fieldView(mosaic = tif,
 ### Acknowledgments
 
 > * [OpenDroneMap](https://www.opendronemap.org/)
+> * [Phenome-Force Channel](https://youtube.com/@phenomeforce6569)
+> * [r-spatial community](https://github.com/r-spatial)
 
 <br />
 
