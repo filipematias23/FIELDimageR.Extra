@@ -91,7 +91,7 @@ install.packages("FIELDimageR.Extra_0.0.1.tar.gz", repos = NULL, type="source") 
 > **Reading necessary packages:**
 ```r
 # Install:
-install.packages(c("BGGE",'mapview','sf','stars'))
+install.packages(c('terra','mapview','sf','stars'))
 devtools::install_github("OpenDroneMap/FIELDimageR")
 
 # Packages:
