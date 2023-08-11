@@ -21,15 +21,17 @@
 
 [Step 4. Editing the plot shapefile (Zoom)](#p4)
 
-[Step 5. Building vegetation indices and removing the soil effect](#p5)
+[Step 5. Building vegetation indices](#p5)
 
-[Step 6. Extracting data from field images](#p6)
+[Step 6. Removing the soil effect](#p5a)
 
-[Step 7. Vizualizing extracted data](#p7)
+[Step 7. Extracting data from field images](#p6)
 
-[Step 8. Saving output files and opening them in the QGIS](#p8) 
+[Step 8. Vizualizing extracted data](#p7)
 
-[Step 9. Cropping individual plots and saving](#p9)
+[Step 9. Saving output files and opening them in the QGIS](#p8) 
+
+[Step 10. Cropping individual plots and saving](#p9)
 
 [Contact](#contact)
 
@@ -368,17 +370,59 @@ fieldView(single_layer,
 
 <br />
 
-> In the same way, removing soil step continues being made by the function [**`FIELDimageR::fieldMask`**](https://github.com/OpenDroneMap/FIELDimageR#P4) from FIELDimageR package.
+[Menu](#menu)
+
+<div id="p5a" />
+
+---------------------------------------------
+#### 6. Building vegetation indices and removing the soil effect
+
+> FIELDimageR.Extra introduce the function **`fieldKmeans`** as the first option to remove soil (Option_01). Based on the K-means unsupervised method, this function clusters pixels on the number of clusters decided by the user. Each cluster can be associated with plants, soil, shadows, etc.
 
 ```r
-# Removing soil and making a mask
-Test.RemSoil<-fieldMask(Test.Indices)
+# Option_01 = Using fieldKmeans() to extract soil
+Test.kmean<-fieldKmeans(mosaic=Test.Indices$GLI,
+                   clusters = 2)
 
+fieldView(Test.kmean)
+#cluster 1 represents plants
+#cluster 2 represents soil
+
+library(leafsync)
+m0<-fieldView(Test)
+m1<-fieldView(Test.kmean==1)
+sync(m0,m1)
+
+# Soil Mask (cluster 2):
+soil<-Test.kmean==2
+Test.RemSoil<-fieldMask(Test.Indices,
+                        mask = soil) 
 fieldView(Test.RemSoil$newMosaic,
           fieldShape = editShape,
           type = 2,
           alpha_grid = 0.2)
-      
+
+```
+
+<br />
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex12a.jpg" width="80%" height="80%">
+</p>
+
+<br />
+
+> Option 02 is the traditional way to remove soil using the function [**`FIELDimageR::fieldMask`**](https://github.com/OpenDroneMap/FIELDimageR#P4) from FIELDimageR package.
+
+```r
+
+# Option_02 = Using the traditional FIELDimageR::fieldMask()
+Test.RemSoil<-fieldMask(Test.Indices) 
+fieldView(Test.RemSoil$newMosaic,
+          fieldShape = editShape,
+          type = 2,
+          alpha_grid = 0.2)
+     
 ```
 <br />
 
@@ -393,7 +437,7 @@ fieldView(Test.RemSoil$newMosaic,
 <div id="p6" />
 
 ---------------------------------------------
-#### 6. Extracting data from field images 
+#### 7. Extracting data from field images 
 
 > The function *aggregate* from **[stars](https://r-spatial.github.io/stars/reference/aggregate.stars.html)** was adapted for agricultural field experiments through function **`fieldInfo_extra`**. 
 
@@ -416,7 +460,7 @@ DataTotal
 <div id="p7" />
 
 ---------------------------------------------
-#### 7. Vizualizing extracted data
+#### 8. Vizualizing extracted data
 
 > There are different ways to use the function **`fieldView`** to visualize and interpret extracted data.  
 
@@ -507,7 +551,7 @@ sync(m1,m2,m3,m4)
 <div id="p8" />
 
 ---------------------------------------------
-#### 8. Saving output files and opening them in the QGIS
+#### 9. Saving output files and opening them in the QGIS
 
 ```r
 # Saving Data.csv (You can remove the 'geometry' info):
@@ -536,7 +580,7 @@ Saved_Grid= st_read("grid.shp")
 <div id="p9" />
 
 ---------------------------------------------
-#### 9. Cropping individual plots and saving
+#### 10. Cropping individual plots and saving
 
 > Many times when developing algorithms it is necessary to crop the mosaic using the plot fieldShape as a reference and sort/store cropped plot images on specific folders. For instance, the function **`fieldCrop_grid`** allows cropping plots and identification by 'plotID'. The user also can save each plot according to a 'classifier' logic (Attention: a column in the 'fieldShape' with the desired classification must be informed). In the example below, each plot in the 'Test.Indices' mosaic is being cropped according to the 'editShape' grid file, identified by the information in the 'plot' column, and stored/saved in specific folders with different levels of Maturity the 'classifier'.
 
