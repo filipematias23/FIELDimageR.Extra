@@ -5,7 +5,7 @@
 #' @description It allows cluster pixels on k groups that can be related with plants, soil, shadows, etc.
 #' 
 #' @param mosaic image object format \code{\link{rast}} or \code{\link{stars}}.
-#' @param clusters number of clusters to sort pixels (Default = 3). 
+#' @param clusters number of clusters to sort pixels (Default = 2). 
 #' @param iteration number of iterations (Default = 500).
 #' @param algorithm kmeans algorithm. Check for options on \code{\link{stats::kmeans}} (Default = "Lloyd").
 #' @param plot plot clusters
@@ -18,7 +18,7 @@
 #' 
 #' @export
 fieldKmeans <- function(mosaic,
-                        clusters = 3,
+                        clusters = 2,
                         iteration = 500,
                         algorithm ="Lloyd",
                         plot=TRUE,
