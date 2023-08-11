@@ -6,7 +6,7 @@
 \usage{
 fieldKmeans(
   mosaic,
-  clusters = 3,
+  clusters = 2,
   iteration = 500,
   algorithm = "Lloyd",
   plot = TRUE,
@@ -16,7 +16,7 @@ fieldKmeans(
 \arguments{
 \item{mosaic}{image object format \code{\link{rast}} or \code{\link{stars}}.}
 
-\item{clusters}{number of clusters to sort pixels (Default = 3).}
+\item{clusters}{number of clusters to sort pixels (Default = 2).}
 
 \item{iteration}{number of iterations (Default = 500).}
 
