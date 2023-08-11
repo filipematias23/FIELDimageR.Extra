@@ -15,7 +15,9 @@ fieldShape_render(
   r = 1,
   g = 2,
   b = 3,
-  color_options = NULL
+  color_options = NULL,
+  max_pixels = 1e+08,
+  downsample = 5
 )
 }
 \arguments{
@@ -38,6 +40,10 @@ fieldShape_render(
 \item{b}{blue layer in the mosaic (for RGB image normally is 3). If NULL the first single layer will be plotted.}
 
 \item{color_options}{single layer coloring options. Check more information at \code{\link{color_options}} from \code{\link{leafem}} package.}
+
+\item{max_pixels}{maximun pixels allowed before down sampling. Reducing size to accelerate analysis. Default = 100000000.}
+
+\item{downsample}{numeric downsample reduction factor. Default = 5.}
 
 \item{plotID}{name of plot ID in the fieldData file to combine with fieldShape.}
 }

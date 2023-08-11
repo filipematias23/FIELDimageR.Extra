@@ -12,15 +12,6 @@ fieldInfo_extra(mosaic, fieldShape, fun = mean)
 \item{fieldShape}{plot shape file, please use first the function \code{\link{fieldShape}}.}
 
 \item{fun}{to summarize the values (e.g. mean).}
-
-\item{plot}{if is TRUE the original and crop image will be plotted.}
-
-\item{buffer}{negative values should be used to remove boundaries from neighbor plot 
-(normally the unit is meters, please use values as 0.1 = 10 cm).}
-
-\item{n.core}{number of cores to use for multicore processing (Parallel).}
-
-\item{projection}{if is FALSE projection will be ignored.}
 }
 \value{
 A data frame class "sf" with values by plot.
@@ -30,5 +21,5 @@ Function that use \code{raster::extract()} to extract information from the origi
 image using fieldShape file as reference.
 }
 \details{
-fieldInfo
+fieldInfo_extra
 }

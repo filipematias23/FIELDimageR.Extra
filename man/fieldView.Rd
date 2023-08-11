@@ -16,7 +16,9 @@ fieldView(
   colorOptions = viridisLite::viridis,
   col_grid = viridisLite::viridis,
   alpha_grid = 1,
-  seq_grid = NULL
+  seq_grid = NULL,
+  max_pixels = 1e+08,
+  downsample = 5
 )
 }
 \arguments{
@@ -36,13 +38,17 @@ fieldView(
 
 \item{b}{blue layer in the mosaic (for RGB image normally is 3). If NULL the first single layer will be plotted.}
 
-\item{colorOptions}{single layer coloring options. Check more information at \code{\link{colorOptions}} from \code{\link{leafem}} package.}
+\item{colorOptions}{single layer coloring options. Check more information at \code{\link{colorOptions}} from \code{\link{leafem}} package (check for 'palette').}
 
 \item{col_grid}{grid color options similar to 'col.regions' parameter in 'mapview'.}
 
 \item{alpha_grid}{transparency with values between 0 and 1.}
 
 \item{seq_grid}{color classes similar to 'at' parameter in 'mapview'.}
+
+\item{max_pixels}{maximun pixels allowed before down sampling. Reducing size to accelerate analysis. Default = 100000000.}
+
+\item{downsample}{numeric downsample reduction factor. Default = 5.}
 }
 \value{
 Mosaic and fieldShape visualization object.
