@@ -336,7 +336,7 @@ fieldView(mosaic = Test,
 <div id="p5" />
 
 ---------------------------------------------
-#### 5. Building vegetation indices and removing the soil effect
+#### 5. Building vegetation indices
 
 > Vegetation indices still being calculated using the function [**`FIELDimageR::fieldIndex`**](https://github.com/OpenDroneMap/FIELDimageR#P6) from FIELDimageR package.
 
@@ -375,25 +375,25 @@ fieldView(single_layer,
 <div id="p5a" />
 
 ---------------------------------------------
-#### 6. Building vegetation indices and removing the soil effect
+#### 6. Removing the soil effect
 
 > FIELDimageR.Extra introduce the function **`fieldKmeans`** as the first option to remove soil (Option_01). Based on the K-means unsupervised method, this function clusters pixels on the number of clusters decided by the user. Each cluster can be associated with plants, soil, shadows, etc.
+
+* Attention: Each image/mosaic will have different cluster numbers representing plants or soil. In this example, cluster_01 is plants and cluster_02 is soil.
 
 ```r
 # Option_01 = Using fieldKmeans() to extract soil
 Test.kmean<-fieldKmeans(mosaic=Test.Indices$GLI,
                    clusters = 2)
-
 fieldView(Test.kmean)
-#cluster 1 represents plants
-#cluster 2 represents soil
 
+# Check which cluster is related to plants or soil based on the color. In this example cluster 1 represents plants and cluster 2 represents soil
 library(leafsync)
-m0<-fieldView(Test)
-m1<-fieldView(Test.kmean==1)
-sync(m0,m1)
+rgb<-fieldView(Test)
+plants<-fieldView(Test.kmean==1)
+sync(rgb,plants)
 
-# Soil Mask (cluster 2):
+# Soil Mask (cluster 2) to remove soil effect from the mosaic using FIELDimageR::fieldMask :
 soil<-Test.kmean==2
 Test.RemSoil<-fieldMask(Test.Indices,
                         mask = soil) 
