@@ -27,7 +27,7 @@ fieldInfo_extra <- function(mosaic,
     mosaic<-terra::rast(mosaic)
   }
   plotInfo <- terra::extract(mosaic, fieldShape, fun = fun, na.rm = TRUE)
-  Out<-cbind.data.frame(fieldShape, plotInfo)
+  Out<-cbind(fieldShape, plotInfo)
   print("End!")
   return(Out)
 }
