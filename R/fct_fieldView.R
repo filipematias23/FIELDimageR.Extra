@@ -104,7 +104,7 @@ fieldView <- function(mosaic = NULL,
           drawFeatures(editor = "leafpm")
         gc()
         if (!is.null(sf_shp)) {
-          sf_obj <- sf_shp %>% st_transform(st_crs(stars_object))
+          sf_obj <- sf_shp %>% st_transform(st_crs(mosaic))
         } else {
           print("No feature created ...")
           sf_end <- NULL
@@ -119,7 +119,7 @@ fieldView <- function(mosaic = NULL,
           drawFeatures(editor = "leafpm") 
         gc()
         if (!is.null(sf_shp)) {
-          sf_obj <- sf_shp %>% st_transform(st_crs(stars_object))
+          sf_obj <- sf_shp %>% st_transform(st_crs(mosaic))
         } else {
           print("No feature created ...")
           sf_end <- NULL
