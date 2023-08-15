@@ -377,9 +377,7 @@ fieldView(single_layer,
 ---------------------------------------------
 #### 6. Removing the soil effect
 
-> FIELDimageR.Extra introduce the function **`fieldKmeans`** as the first option to remove soil (Option_01). Based on the K-means unsupervised method, this function clusters pixels on the number of clusters decided by the user. Each cluster can be associated with plants, soil, shadows, etc.
-
-* Attention: Each image/mosaic will have different cluster numbers representing plants or soil. In this example, cluster_01 is plants and cluster_02 is soil.
+> FIELDimageR.Extra introduce the function **`fieldKmeans`** as the first option to remove soil (Option_01). Based on the K-means unsupervised method. This function clusters pixels on the number of clusters decided by the user. Each cluster can be associated with plants, soil, shadows, etc. *Attention:* Each image/mosaic will have different cluster numbers representing plants or soil. In this example, cluster_01 is plants and cluster_02 is soil.
 
 ```r
 # Option_01 = Using fieldKmeans() to extract soil
@@ -412,11 +410,59 @@ fieldView(Test.RemSoil$newMosaic,
 
 <br />
 
-> Option 02 is the traditional way to remove soil using the function [**`FIELDimageR::fieldMask`**](https://github.com/OpenDroneMap/FIELDimageR#P4) from FIELDimageR package.
+> Option 02 is the new function [**`fieldSegment`**]. This function uses samples of images and machine learning algorithms for pixel classification (Supervised method). There are two models included *Random Forest* (default) and *cart*. Initially, users need to create training samples by using **fieldView** function by enabling the editor option to digitize spatial object (e.g. soil, plant, shadow etc.). For instance, users need to utilize the draw polygon or draw rectangle tool in the editor. The mapedit objects have 0.000001 degree spatial resolution, about 10 cm at the equator (Source: https://github.com/r-spatial/mapedit/issues/63). For images with coarse spatial resolution, this level of precision won't significantly affect digitization accuracy. However, for UAV images with high spatial resolution, this precision (around 10 cm) can significantly impact the accuracy of digitization. Therefore, using the pointer tool in the editor for digitizing small objects like flowers could potentially lead to inaccuracies in the digitization position. For accurate results, prefer to draw polygon or rectangle tools in the editor for digitizing larger size objects. For digitizing smaller objects(e.g. flowers) users can use QGIS software and use it for further analysis in R.
 
 ```r
 
-# Option_02 = Using the traditional FIELDimageR::fieldMask()
+### Option_02 = Using fieldSegment()
+
+# Digitize soil object by drawing polygons at least 5-6 large polygon uniformly distributed
+soil<-fieldView(mosaic = Test, editor = TRUE) #generate random 200 points for soil class
+soil<-st_as_sf(st_sample(soil, 200))
+soil$class<-'soil'
+
+# Digitize plants object by drawing polygons. The number of polygon will depends upon the number of training points to be generated.
+plants<-fieldView(mosaic = Test, editor = TRUE)
+plants<-st_as_sf(st_sample(plants, 200)) #generate random 200 points for plants class
+plants$class<-'plants'
+
+#similarly you can digitize shadow, other objects by using draw polygon tool of editor
+training_sam<-rbind(soil,plants)
+
+# Random Forest model:
+classification<-fieldSegment(mosaic = Test, 
+                             trainDataset = training_sam)
+
+# To display results of classification from randomForest
+classification$sup_model
+classification$pred
+classification$rastPred
+fieldView(classification$rastPred)
+plot(classification$rastPred)
+
+# Creating a mask to remove soil from the original image:
+soil<-classification$rastPred=="soil"
+Test.RemSoil<-fieldMask(Test.Indices,
+                        mask = soil) 
+fieldView(Test.RemSoil$newMosaic,
+          fieldShape = editShape,
+          type = 2,
+          alpha_grid = 0.2)
+     
+```
+<br />
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex12b.jpg" width="80%" height="80%">
+</p>
+
+<br />
+
+> Option 03 is the traditional way to remove soil using the function [**`FIELDimageR::fieldMask`**](https://github.com/OpenDroneMap/FIELDimageR#P4) from FIELDimageR package (Thresholding Method). 
+
+```r
+
+# Option_03 = Using the traditional FIELDimageR::fieldMask()
 Test.RemSoil<-fieldMask(Test.Indices) 
 fieldView(Test.RemSoil$newMosaic,
           fieldShape = editShape,
