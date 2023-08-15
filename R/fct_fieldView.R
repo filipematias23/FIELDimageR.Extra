@@ -110,10 +110,10 @@ fieldView <- function(mosaic = NULL,
           sf_end <- NULL
         }
       } else if (nlyr(mosaic) == 1) {
-        if (nlyr(mosaic) == 1)
-  stars_object[is.na(stars_object)] <- NA
-sf_shp <- mapview() %>%
-  leafem:::addGeoRaster(x = stars_object, colorOptions = leafem:::colorOptions(palette = colorOptions, na.color = "transparent")) %>%
+        if (nlyr(mosaic) == 1) colorOptions = colorOptions
+        stars_object[is.na(stars_object)] <- NA
+        sf_shp <- mapview() %>%
+          leafem:::addGeoRaster(x = stars_object, colorOptions = colorOptions) %>%
           addImageQuery(x = stars_object, type = "mousemove", digits = 2, layerId = names(mosaic)) %>%
           addLayersControl(overlayGroups = names(mosaic)) %>%
           drawFeatures(editor = "leafpm") 
