@@ -23,7 +23,7 @@
 
 [Step 5. Building vegetation indices](#p5)
 
-[Step 6. Removing the soil effect (Image Segmentation based on kmeans, Random Forest, etc.)](#p5a)
+[Step 6. Image Segmentation based on unsupervised (K-means) and supervised (Random Forest) methods to remove the soil effect](#p5a)
 
 [Step 7. Extracting data from field images](#p6)
 
