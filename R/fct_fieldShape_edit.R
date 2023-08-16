@@ -85,7 +85,7 @@ fieldShape_edit <- function(mosaic,
       stars_object[is.na(stars_object)]<-NA
       edit_shp <- fieldShape %>% st_transform(4326) %>%
         editFeatures(map = mapview() %>%
-                       leafem:::addGeoRaster(x = stars_object, colorOptions = leafem:::colorOptions(palette = colorOptions, na.color = "transparent"), editor = "leafpm"))
+                       leafem:::addGeoRaster(x = stars_object, colorOptions = leafem:::colorOptions(palette = color_options, na.color = "transparent"), editor = "leafpm"))
       finshapefile <- edit_shp %>% st_transform(st_crs(mosaic))
       
     } else if (!is.null(shp)) {
