@@ -34,7 +34,7 @@ fieldShape_edit <- function(mosaic,
                             r=1, 
                             g=2, 
                             b=3, 
-                            color_options=NULL,
+                            color_options=viridsLite::viridis,
                             max_pixels=100000000,
                             downsample=5) {
   print("Starting analysis ...")
