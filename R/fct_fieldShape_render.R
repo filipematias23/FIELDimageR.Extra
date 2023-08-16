@@ -88,7 +88,7 @@ fieldShape_render<- function(mosaic,
       stars_object[is.na(stars_object)]<-NA
       four_point <- mapview() %>%
         leafem:::addGeoRaster(
-          x = stars_object,colorOptions = leafem:::colorOptions(palette = colorOptions, na.color = "transparent"),
+          x = stars_object,colorOptions = leafem:::colorOptions(palette = color_options, na.color = "transparent"),
           fieldData= path_csv_file
         ) %>%
         editMap("mosaic", editor = "leafpm")  
