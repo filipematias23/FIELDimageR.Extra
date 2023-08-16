@@ -40,7 +40,7 @@ fieldShape_render<- function(mosaic,
                              r=1,
                              g=2,
                              b=3,
-                             color_options=viridsLite::viridis,
+                             color_options=viridisLite::viridis,
                              max_pixels=100000000,
                              downsample=5
                              ) {
