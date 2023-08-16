@@ -1,5 +1,5 @@
 Package: FIELDimageR.Extra
-Version: 0.0.1
+Version: 0.0.2
 Date: 2023-08-01
 Title: Package with new tools to support FIELDimageR software on evaluating GIS images from agriculture field trials. 
 Author: Popat Pawar & Filipe Matias
@@ -7,6 +7,6 @@ Depends: R (>= 3.1.0), nlme
 Suggests: MASS
 Description: A compilation of new functions to support FIELDimageR package (github.com/OpenDroneMap/FIELDimageR).
 License: GPL (>= 2)
-URL: https://github.com/OpenDroneMap/FIELDimageR
+URL: https://github.com/filipematias23/FIELDimageR.Extra
 BugReports: https://groups.google.com/forum/#!forum/fieldimager
 RoxygenNote: 7.2.3
