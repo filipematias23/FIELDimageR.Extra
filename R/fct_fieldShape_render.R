@@ -42,7 +42,7 @@ fieldShape_render<- function(mosaic,
                              r=1,
                              g=2,
                              b=3,
-                             color_options=NULL,
+                             color_options=viridisLite::viridis,
                              max_pixels=100000000,
                              downsample=5
                              ) {
@@ -90,7 +90,7 @@ fieldShape_render<- function(mosaic,
       stars_object[is.na(stars_object)]<-NA
       four_point <- mapview() %>%
         leafem:::addGeoRaster(
-          x = stars_object,colorOptions = color_options,
+          x = stars_object,colorOptions = leafem:::colorOptions(palette = color_options, na.color = "transparent"),
           fieldData= path_csv_file
         ) %>%
         editMap("mosaic", editor = "leafpm")  
