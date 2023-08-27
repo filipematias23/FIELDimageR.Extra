@@ -12,6 +12,7 @@
 #' @param fieldMap matrix with plots ID identified by rows and ranges, please use first the funsction \code{\link{fieldMap}}.
 #' @param plotID name of plot ID in the fieldData file to combine with fieldShape.
 #' @param buffer negative values should be used to remove boundaries from neighbor plot.
+#' @param plot_size specific plot shape size c(x,y). For example, mosaic with pixels in meter \code{\link{plot_size=c(0.5,1.5)}} means 0.5m x 1.5cm the plot shape.   
 #' @param r red layer in the mosaic (for RGB image normally is 1). If NULL the first single layer will be plotted. 
 #' @param g green layer in the mosaic (for RGB image normally is 2). If NULL the first single layer will be plotted.
 #' @param b blue layer in the mosaic (for RGB image normally is 3). If NULL the first single layer will be plotted.
@@ -37,10 +38,11 @@ fieldShape_render<- function(mosaic,
                              fieldMap=NULL,
                              PlotID=NULL,
                              buffer=NULL,
+                             plot_size = NULL,
                              r=1,
                              g=2,
                              b=3,
-                             color_options=viridisLite::viridis,
+                             color_options=NULL,
                              max_pixels=100000000,
                              downsample=5
                              ) {
@@ -88,7 +90,7 @@ fieldShape_render<- function(mosaic,
       stars_object[is.na(stars_object)]<-NA
       four_point <- mapview() %>%
         leafem:::addGeoRaster(
-          x = stars_object,colorOptions = leafem:::colorOptions(palette = color_options, na.color = "transparent"),
+          x = stars_object,colorOptions = color_options,
           fieldData= path_csv_file
         ) %>%
         editMap("mosaic", editor = "leafpm")  
@@ -106,6 +108,45 @@ fieldShape_render<- function(mosaic,
     intercept <- matrix(linMod$coefficients[1, ], ncol = 2)
     affineT <- grids * parameters + intercept
     grid_shapefile <- st_sf(affineT, crs = st_crs(mosaic)) %>% mutate(ID = seq(1:length(affineT)))
+    
+    rect_around_point <- function(x, xsize, ysize) {
+      bbox <- st_bbox(x)
+      bbox <- bbox + c(xsize / 2, ysize / 2, -xsize / 2, -ysize / 2)
+      return(st_as_sfc(st_bbox(bbox)))
+    }
+    
+    if (!is.null(plot_size)) {
+      if (length(plot_size) == 1) {
+        cat("\033[1;31mError:\033[0m Please provide x and y distance. e.g. plot_size=c(0.5,2.5)\n")
+      } else {
+        if (st_is_longlat(grid_shapefile)) {
+          grid_shapefile <- st_transform(grid_shapefile, crs = 3857)
+          cen <- suppressWarnings(st_centroid(grid_shapefile))
+          bbox_list <- lapply(st_geometry(cen), st_bbox)
+          points_list <- lapply(bbox_list, st_as_sfc)
+          rectangles <- lapply(points_list, function(pt) rect_around_point(pt, plot_size[1], plot_size[2]))
+          points <- rectangles[[1]]
+          for (i in 2:length(rectangles)) {
+            points <- c(points, rectangles[[i]])
+          }
+          st_crs(points) <- st_crs(cen)
+          grid_shapefile <- st_as_sf(points)
+          grid_shapefile <- st_transform(grid_shapefile, st_crs(mosaic))
+        } else {
+          cen <- suppressWarnings(st_centroid(grid_shapefile))
+          bbox_list <- lapply(st_geometry(cen), st_bbox)
+          points_list <- lapply(bbox_list, st_as_sfc)
+          rectangles <- lapply(points_list, function(pt) rect_around_point(pt, plot_size[1], plot_size[2]))
+          points <- rectangles[[1]]
+          for (i in 2:length(rectangles)) {
+            points <- c(points, rectangles[[i]])
+          }
+          st_crs(points) <- st_crs(cen)
+          grid_shapefile <- st_as_sf(points)
+          grid_shapefile <- st_transform(grid_shapefile, st_crs(mosaic))
+        }
+      }
+    }
     
     if (!is.null(buffer)) {
       if (st_is_longlat(grid_shapefile)) {
