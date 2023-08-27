@@ -12,6 +12,7 @@ fieldShape_render(
   fieldMap = NULL,
   PlotID = NULL,
   buffer = NULL,
+  plot_size = NULL,
   r = 1,
   g = 2,
   b = 3,
@@ -32,6 +33,8 @@ fieldShape_render(
 \item{fieldMap}{matrix with plots ID identified by rows and ranges, please use first the funsction \code{\link{fieldMap}}.}
 
 \item{buffer}{negative values should be used to remove boundaries from neighbor plot.}
+
+\item{plot_size}{specific plot shape size c(x,y). For example, mosaic with pixels in meter \code{\link{plot_size=c(0.5,1.5)}} means 0.5m x 1.5cm the plot shape.}
 
 \item{r}{red layer in the mosaic (for RGB image normally is 1). If NULL the first single layer will be plotted.}
 
