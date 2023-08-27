@@ -302,6 +302,33 @@ fieldView(mosaic = Test,
 
 <br />
 
+>  Users can use a specific plot size to build the grid shape file by informing X and Y plot length in the parameter **`plot_size`**. It´s very important to highlight the applied values are connected with the mosaic resolution and unit. For example, **`plot_size=c(0.6,4)`** means **0.6m by 4m** or **60cm by 400cm** in the example below.
+
+```r
+### Building the plot shapefile using specific plot sizes with the parameter 'plot_size':
+
+plotShape_plotSize<-fieldShape_render(mosaic = Test,
+                             ncols=14,
+                             nrows=9,
+                             fieldData = DataTable,
+                             fieldMap = fieldMap,
+                             PlotID = "Plot",
+                             plot_size = c(0.6,4))
+
+# Checking the new plot grid shapefile using plot_size = c(0.6,4):
+fieldView(mosaic = Test,
+          fieldShape = plotShape_plotSize,
+          type = 2,
+          alpha = 0.2)                      
+```
+<br />
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/filipematias23/images/master/readme/Fex9a.jpg" width="60%" height="60%">
+</p>
+
+<br />
+
 [Menu](#menu)
 
 <div id="p4" />
