@@ -34,7 +34,7 @@ fieldShape_render(
 
 \item{buffer}{negative values should be used to remove boundaries from neighbor plot.}
 
-\item{plot_size}{specific plot shape size c(x,y). For example, mosaic with pixels in meter \code{\link{plot_size=c(0.5,1.5)}} means 0.5m x 1.5cm the plot shape.}
+\item{plot_size}{specific plot shape size c(x,y). For example, mosaic with pixels in meter \code{\link{plot_size=c(0.5,1.5)}} means 0.5m x 1.5m or 50cm x 150cm the plot shape.}
 
 \item{r}{red layer in the mosaic (for RGB image normally is 1). If NULL the first single layer will be plotted.}
 
