@@ -131,7 +131,10 @@ sf_shp <- mapview() %>%
     }}
   if(!is.null(fieldShape)){
     if(type==1){m1<-sf_end}
-    m2<-mapview(fieldShape, col.regions = col_grid, at = seq_grid)
+    m2<-mapview(fieldShape, 
+                col.regions = col_grid, 
+                alpha.regions=alpha_grid,
+                at = seq_grid)
     if(!is.null(plotCol)){
       if(!all(plotCol%in%colnames(fieldShape))){
         print("'plotCol' in not a column in fieldShape")
