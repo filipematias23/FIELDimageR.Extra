@@ -158,7 +158,7 @@ fieldShape_render<- function(mosaic,
         grid_shapefile <- st_transform(grid_shapefile, st_crs(mosaic))
       }
     }
-    
+    grid_shapefile$PlotID<-seq(1,dim(grid_shapefile)[1])                          
     print("Almost there ...")
     if(!is.null(fieldMap)){
       id<-NULL
