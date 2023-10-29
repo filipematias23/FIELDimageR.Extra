@@ -121,6 +121,10 @@ Test <- rast("EX1_RGB.tif")
 # Visualization Option-01 (FIELDimageR.Extra):
 fieldView(Test)
 
+# Only if necessary you can crop the mosaic/image to reduce size:
+# x11()
+# EX1 <- rast(fieldCrop(mosaic = EX1)) # For heavy images (large, high resolution, etc.) please use: fast.plot=T
+
 ```
 
 <br />
