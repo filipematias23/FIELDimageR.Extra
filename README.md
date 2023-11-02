@@ -657,7 +657,7 @@ Saved_Grid= st_read("grid.shp")
 
 ```r
 # Saving plot images format .jpg according to 'Maturity': 
-Field_plot_grids<- fieldCrop_grid(mosaic = rast(Test.Indices),
+Field_plot_grids<- fieldCrop_grid(mosaic = Test.Indices, # if necessary use rast(Test.Indices)
                                   fieldShape = editShape, 
                                   classifier = "Maturity", 
                                   plotID = "Plot",
