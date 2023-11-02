@@ -679,7 +679,7 @@ fieldView(Field_plot_grids$'21')
 
 ```r
 # Saving plot images format .tif according to 'Maturity':
-Field_plot_grids<- fieldCrop_grid(mosaic = rast(Test.Indices),
+Field_plot_grids<- fieldCrop_grid(mosaic = Test.Indices, # if necessary use rast(Test.Indices) 
                                   fieldShape = editShape, 
                                   classifier = "Maturity", 
                                   plotID = "Plot",
