@@ -603,9 +603,9 @@ fieldView(mosaic = Test.RemSoil$newMosaic,
 ```r
 # Syncronizing individual layers:
 library(leafsync)
-m1<-viewRGB(Test.RemSoil$newMosaic)
-m2<-mapview(Test.RemSoil$newMosaic$NGRDI,layer.name="NGRDI")
-m3<-mapview(Test.RemSoil$newMosaic$BGI,layer.name="BGI")
+m1<-viewRGB(as(Test.RemSoil$newMosaic, "Raster"))
+m2<-mapview(as(Test.RemSoil$newMosaic$NGRDI, "Raster"),layer.name="NGRDI")
+m3<-mapview(as(Test.RemSoil$newMosaic$BGI, "Raster"),layer.name="BGI")
 m4<-mapview(DataTotal,zcol="Yield")
 sync(m1,m2,m3,m4)
 ```
