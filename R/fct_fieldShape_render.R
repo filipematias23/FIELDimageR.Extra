@@ -45,7 +45,7 @@ fieldShape_render<- function(mosaic,
                              color_options=viridisLite::viridis,
                              max_pixels=100000000,
                              downsample=5
-                             ) {
+) {
   print("Starting analysis ...")
   if (is.null(mosaic)) {
     stop("The input 'mosaic' object is NULL.")
@@ -74,17 +74,17 @@ fieldShape_render<- function(mosaic,
       stars_object <- read_stars(stars_object$layer_name, proxy = TRUE)
       stars_object <- st_downsample(stars_object, n = downsample)
     }
-      }
-
+  }
+  
   print("Use 'Draw Marker' to select 4 points at the corners of field and press 'DONE'. Attention is very important start clicking from left to the right and top to bottom.")
   if(nlyr(mosaic)>2){
     stars_object[is.na(stars_object)]<-0
     four_point <- mapview() %>%
-    leafem:::addRGB(
-      x = stars_object,r=r,g=g,b=b,
-      fieldData= path_csv_file
-    ) %>%
-    editMap("mosaic", editor = "leafpm")}
+      leafem:::addRGB(
+        x = stars_object,r=r,g=g,b=b,
+        fieldData= path_csv_file
+      ) %>%
+      editMap("mosaic", editor = "leafpm")}
   else{
     if(nlyr(mosaic)==1){
       stars_object[is.na(stars_object)]<-NA
@@ -94,7 +94,7 @@ fieldShape_render<- function(mosaic,
           fieldData= path_csv_file
         ) %>%
         editMap("mosaic", editor = "leafpm")  
-      }
+    }
     
   }
   if (length(four_point$finished$geometry) == 4) {
@@ -106,8 +106,8 @@ fieldShape_render<- function(mosaic,
     linMod <- lm(formula = cbind(controlpoints[, 3], controlpoints[, 4]) ~ controlpoints[, 1] + controlpoints[, 2], data = controlpoints)
     parameters <- matrix(linMod$coefficients[2:3, ], ncol = 2)
     intercept <- matrix(linMod$coefficients[1, ], ncol = 2)
-    affineT <- grids * parameters + intercept
-    grid_shapefile <- st_sf(affineT, crs = st_crs(mosaic)) %>% mutate(ID = seq(1:length(affineT)))
+    geometry <- grids * parameters + intercept
+    grid_shapefile <- st_sf(geometry, crs = st_crs(mosaic)) %>% mutate(ID = seq(1:length(geometry)))
     
     rect_around_point <- function(x, xsize, ysize) {
       bbox <- st_bbox(x)
