@@ -1,21 +1,21 @@
-#' fieldKmeans 
-#' 
+#' fieldKmeans
+#'
 #' @title Clustering pixels using kmeans algorithm.
-#' 
+#'
 #' @description It allows cluster pixels on k groups that can be related with plants, soil, shadows, etc.
-#' 
+#'
 #' @param mosaic image object format \code{\link{rast}} or \code{\link{stars}}.
-#' @param clusters number of clusters to sort pixels (Default = 2). 
+#' @param clusters number of clusters to sort pixels (Default = 2).
 #' @param iteration number of iterations (Default = 500).
 #' @param algorithm kmeans algorithm. Check for options on \code{\link{stats::kmeans}} (Default = "Lloyd").
 #' @param plot plot clusters
 #' @param seed set.seed
-#' 
+#'
 #' @importFrom terra nlyr rast plot
 #' @importFrom stats kmeans
-#' 
+#'
 #' @return An image object format \code{\link{rast}} identified with clusters.
-#' 
+#'
 #' @export
 fieldKmeans <- function(mosaic,
                         clusters = 2,
@@ -39,24 +39,24 @@ fieldKmeans <- function(mosaic,
       mosaic<-na.omit(mosaic)
       ortho <- as.data.frame(mosaic[[1]], cell = TRUE)
       set.seed(seed)
-      kmncluster <- kmeans(ortho[, -1], 
-                           centers = clusters, 
-                           iter.max = iteration, 
-                           nstart = 5, 
+      kmncluster <- kmeans(ortho[, -1],
+                           centers = clusters,
+                           iter.max = iteration,
+                           nstart = 5,
                            algorithm = algorithm)
       kmean_cluster <- rast(mosaic, nlyr = 1)
-      kmean_cluster[] <- kmncluster$cluster[ortho$cell]
+      kmean_cluster[ortho$cell] <- kmncluster$cluster[ortho$cell]
     } else if (nlyr(mosaic) == 1) {
       mosaic<-na.omit(mosaic)
       ortho <- as.data.frame(mosaic, cell = TRUE)
       set.seed(seed)
-      kmncluster <- kmeans(ortho[, -1], 
-                           centers = clusters, 
-                           iter.max = iteration, 
-                           nstart = 5, 
+      kmncluster <- kmeans(ortho[, -1],
+                           centers = clusters,
+                           iter.max = iteration,
+                           nstart = 5,
                            algorithm = algorithm)
       kmean_cluster <- rast(mosaic, nlyr = 1)
-      kmean_cluster[] <- kmncluster$cluster[ortho$cell]
+      kmean_cluster[ortho$cell] <- kmncluster$cluster[ortho$cell]
     }
   }, error = function(e) {
     warning("An error occurred:", conditionMessage(e))
