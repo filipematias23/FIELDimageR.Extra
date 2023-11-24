@@ -69,7 +69,7 @@ fieldShape_render<- function(mosaic,
   } else{
     stars_object <- mosaic
     if (!inherits(stars_object, "stars")) {
-      stars_object <- st_as_stars(mosaic)
+      stars_object <- st_as_stars(mosaic, proxy = TRUE)
       names(stars_object)<-"layer_name"
       # stars_object <- read_stars(stars_object$layer_name, proxy = TRUE)
       stars_object <- st_downsample(stars_object, n = downsample)
