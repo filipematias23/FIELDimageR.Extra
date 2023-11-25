@@ -31,32 +31,32 @@
 #' @return A field plot shape file class "sf" & "data.frame".
 #'
 #' @export
-fieldShape_render<- function(mosaic,
-                             ncols, 
-                             nrows, 
-                             fieldData=NULL,
-                             fieldMap=NULL,
-                             PlotID=NULL,
-                             buffer=NULL,
-                             plot_size = NULL,
-                             r=1,
-                             g=2,
-                             b=3,
-                             color_options=viridisLite::viridis,
-                             max_pixels=100000000,
-                             downsample=5
+fieldShape_render <- function(mosaic,
+                               ncols, 
+                               nrows, 
+                               fieldData=NULL,
+                               fieldMap=NULL,
+                               PlotID=NULL,
+                               buffer=NULL,
+                               plot_size=NULL,
+                               r=1,
+                               g=2,
+                               b=3,
+                               color_options=viridisLite::viridis,
+                               max_pixels=100000000,
+                               downsample=5
 ) {
   print("Starting analysis ...")
   if (is.null(mosaic)) {
     stop("The input 'mosaic' object is NULL.")
   }
   
-  if(class(mosaic)%in%c("RasterStack","RasterLayer","RasterBrick")){
-    mosaic<-terra::rast(mosaic)
+  if (class(mosaic) %in% c("RasterStack", "RasterLayer", "RasterBrick")) {
+    mosaic <- terra::rast(mosaic)
   }
   pixels <- prod(dim(mosaic))
-  if(pixels > max_pixels){
-    print("Your 'mosaic' is too large and downsapling is being applied.")
+  if (pixels > max_pixels) {
+    print("Your 'mosaic' is too large and downsampling is being applied.")
   }
   if (pixels < max_pixels) {
     stars_object <- mosaic
@@ -66,36 +66,52 @@ fieldShape_render<- function(mosaic,
         stars_object <- st_warp(stars_object, crs = 4326)
       }
     }
-  } else{
+  } else {
     stars_object <- mosaic
     if (!inherits(stars_object, "stars")) {
       stars_object <- st_as_stars(mosaic, proxy = TRUE)
-      names(stars_object)<-"layer_name"
-      # stars_object <- read_stars(stars_object$layer_name, proxy = TRUE)
-      stars_object <- st_downsample(stars_object, n = downsample)
     }
   }
   
-  print("Use 'Draw Marker' to select 4 points at the corners of field and press 'DONE'. Attention is very important start clicking from left to the right and top to bottom.")
-  if(nlyr(mosaic)>2){
-    stars_object[is.na(stars_object)]<-0
+  print("Use 'Draw Marker' to select 4 points at the corners of the field and press 'DONE'. Attention is very important; start clicking from left to the right and top to bottom.")
+  if (nlyr(mosaic) > 2 && pixels < max_pixels) {
+    stars_object[is.na(stars_object)] <- 0
     four_point <- mapview() %>%
       leafem:::addRGB(
-        x = stars_object,r=r,g=g,b=b,
-        fieldData= path_csv_file
+        x = stars_object, r = r, g = g, b = b,
+        fieldData = path_csv_file
       ) %>%
-      editMap("mosaic", editor = "leafpm")}
-  else{
-    if(nlyr(mosaic)==1){
-      stars_object[is.na(stars_object)]<-NA
+      editMap("mosaic", editor = "leafpm")
+  } else { 
+    if (nlyr(mosaic) > 2 && pixels > max_pixels) {
+      starsRGB <- read_stars(stars_object[[1]], proxy = TRUE)
+      starsRGB <- st_downsample(starsRGB, n = downsample)
+      starsRGB[is.na(starsRGB)] <- 0
       four_point <- mapview() %>%
-        leafem:::addGeoRaster(
-          x = stars_object,colorOptions = leafem:::colorOptions(palette = color_options, na.color = "transparent"),
-          fieldData= path_csv_file
+        leafem:::addRGB(
+          x = starsRGB, r = r, g = g, b = b,
+          fieldData = path_csv_file
         ) %>%
-        editMap("mosaic", editor = "leafpm")  
+        editMap("mosaic", editor = "leafpm")
+    } else {
+      if (nlyr(mosaic) == 1 && pixels > max_pixels) {
+        stars_object[is.na(stars_object)] <- NA
+        four_point <- mapview() %>%
+          leafem:::addGeotiff(
+            stars_object[[1]], colorOptions = leafem:::colorOptions(palette = color_options, na.color = "transparent"),
+            fieldData = path_csv_file
+          ) %>%
+          editMap("mosaic", editor = "leafpm")  
+      } else {
+        stars_object[is.na(stars_object)] <- NA
+        four_point <- mapview() %>%
+          leafem:::addGeoRaster(
+            stars_object, colorOptions = leafem:::colorOptions(palette = color_options, na.color = "transparent"),
+            fieldData = path_csv_file
+          ) %>%
+          editMap("mosaic", editor = "leafpm")
+      }
     }
-    
   }
   if (length(four_point$finished$geometry) == 4) {
     grids <- st_make_grid(four_point$finished$geometry, n = c(ncols, nrows)) %>% st_transform(st_crs(mosaic))
@@ -117,7 +133,7 @@ fieldShape_render<- function(mosaic,
     
     if (!is.null(plot_size)) {
       if (length(plot_size) == 1) {
-        cat("\033[1;31mError:\033[0m Please provide x and y distance. e.g. plot_size=c(0.5,2.5)\n")
+        cat("\033[1;31mError:\033[0m Please provide x and y distance. e.g., plot_size=c(0.5,2.5)\n")
       } else {
         if (st_is_longlat(grid_shapefile)) {
           grid_shapefile <- st_transform(grid_shapefile, crs = 3857)
@@ -153,38 +169,40 @@ fieldShape_render<- function(mosaic,
         grid_shapefile <- st_transform(grid_shapefile, crs = 3857)
         grid_shapefile <- st_buffer(grid_shapefile, dist = buffer)
         grid_shapefile <- st_transform(grid_shapefile, st_crs(mosaic))
-      }else{
-        grid_shapefile<-st_buffer(grid_shapefile,dist= buffer)
+      } else {
+        grid_shapefile <- st_buffer(grid_shapefile, dist = buffer)
         grid_shapefile <- st_transform(grid_shapefile, st_crs(mosaic))
       }
     }
-    grid_shapefile$PlotID<-seq(1,dim(grid_shapefile)[1])                          
+    grid_shapefile$PlotID <- seq(1, dim(grid_shapefile)[1])                          
     print("Almost there ...")
-    if(!is.null(fieldMap)){
-      id<-NULL
+    if (!is.null(fieldMap)) {
+      id <- NULL
       # for(i in 1:dim(fieldMap)[1]){
       #   id<-c(id,rev(fieldMap[i,]))
       # }
-      for(i in dim(fieldMap)[1]:1){
-        id<-c(id,fieldMap[i,])
+      for (i in dim(fieldMap)[1]:1) {
+        id <- c(id, fieldMap[i,])
       }
-      grid_shapefile$PlotID<-as.character(id)}
+      grid_shapefile$PlotID <- as.character(id)
+    }
     
-    if(!is.null(fieldData)){
-      if(is.null(fieldMap)){
+    if (!is.null(fieldData)) {
+      if (is.null(fieldMap)) {
         cat("\033[31m", "Error: fieldMap is necessary", "\033[0m", "\n")
       }
-      fieldData<-as.data.frame(fieldData)
-      fieldData$PlotID<-as.character(fieldData[,colnames(fieldData)%in%c(PlotID)])
-      plots<-merge(grid_shapefile,fieldData,by="PlotID")
-    } else{
-      if(!is.null(grid_shapefile)){
-        #Plot
-        plots<-grid_shapefile} 
+      fieldData <- as.data.frame(fieldData)
+      fieldData$PlotID <- as.character(fieldData[, colnames(fieldData) %in% c(PlotID)])
+      plots <- merge(grid_shapefile, fieldData, by = "PlotID")
+    } else {
+      if (!is.null(grid_shapefile)) {
+        # Plot
+        plots <- grid_shapefile
+      } 
     }
     print("End!")
     return(plots)
   } else {
-    cat("\033[31m", "Error: Select four points only.Points must be set at the corners of field of interest under the plots space", "\033[0m", "\n")
+    cat("\033[31m", "Error: Select four points only. Points must be set at the corners of the field of interest under the plots space", "\033[0m", "\n")
   }
 }
