@@ -28,26 +28,26 @@
 #' @return A new edited plot 'fieldShape' class "sf" & "data.frame".
 #' 
 #' @export
-fieldShape_edit <- function(mosaic,
-                            fieldShape= NULL, 
+fieldShape_edit<- function(mosaic,
+                            fieldShape = NULL, 
                             shp = NULL,
-                            r=1, 
-                            g=2, 
-                            b=3, 
-                            color_options=viridisLite::viridis,
-                            max_pixels=100000000,
-                            downsample=5) {
+                            r = 1, 
+                            g = 2, 
+                            b = 3, 
+                            color_options = viridisLite::viridis,
+                            max_pixels = 100000000,
+                            downsample = 5) {
   print("Starting analysis ...")
   if (is.null(mosaic)) {
     stop("The input 'mosaic' object is NULL.")
   }
   
-  if(class(mosaic)%in%c("RasterStack","RasterLayer","RasterBrick")){
-    mosaic<-terra::rast(mosaic)
+  if (class(mosaic) %in% c("RasterStack", "RasterLayer", "RasterBrick")) {
+    mosaic <- terra::rast(mosaic)
   }
   pixels <- prod(dim(mosaic))
-  if(pixels > max_pixels){
-    print("Your 'mosaic' is too large and downsapling is being applied.")
+  if (pixels > max_pixels) {
+    print("Your 'mosaic' is too large, and downsampling is being applied.")
   }
   if (pixels < max_pixels) {
     stars_object <- mosaic
@@ -57,50 +57,72 @@ fieldShape_edit <- function(mosaic,
         stars_object <- st_warp(stars_object, crs = 4326)
       }
     }
-  } else  {
+  } else {
     stars_object <- mosaic
     if (!inherits(stars_object, "stars")) {
       stars_object <- st_as_stars(mosaic, proxy = TRUE)
-      names(stars_object)<-"layer_name"
-     # stars_object <- read_stars(stars_object$layer_name, proxy = TRUE)
-      stars_object <- st_downsample(stars_object, n = downsample)
     }
   }
   
-  if (!is.null(fieldShape) & nlyr(mosaic)>2) {
-    stars_object[is.na(stars_object)]<-0
-    edit_shp <- fieldShape %>% st_transform(4326) %>%
-      editFeatures(map = mapview() %>%
-                     leafem:::addRGB(x = stars_object, r = r, g = g, b = b, editor = "leafpm"))
-    finshapefile <- edit_shp %>% st_transform(st_crs(mosaic))
-    
-  } else if (!is.null(shp)) {
-    edit_shp <- shp %>% st_transform(4326) %>%
-      editFeatures(map = mapview(st_bbox(stars_object), color = 'red', lwd = 5, alpha = 0) %>%
-                     leafem:::addRGB(x = stars_object, r = r, g = g, b = b, editor = "leafpm"))
-    finshapefile <- edit_shp %>% st_transform(st_crs(mosaic))
-    
-  } else {
-    if (!is.null(fieldShape) & nlyr(mosaic)==1) {
-      stars_object[is.na(stars_object)]<-NA
+  if (!is.null(fieldShape) & nlyr(mosaic) > 2) {
+    if (pixels < max_pixels) {
+      stars_object[is.na(stars_object)] <- 0
       edit_shp <- fieldShape %>% st_transform(4326) %>%
         editFeatures(map = mapview() %>%
-                       leafem:::addGeoRaster(x = stars_object, colorOptions = leafem:::colorOptions(palette = color_options, na.color = "transparent"), editor = "leafpm"))
+                       leafem:::addRGB(x = stars_object, r = r, g = g, b = b, editor = "leafpm"))
       finshapefile <- edit_shp %>% st_transform(st_crs(mosaic))
-      
-    } else if (!is.null(shp)) {
+    } else {
+      starsRGB <- read_stars(stars_object[[1]], proxy = TRUE)
+      starsRGB <- st_downsample(starsRGB, n = downsample)
+      starsRGB[is.na(starsRGB)] <- 0
+      edit_shp <- fieldShape %>% st_transform(4326) %>%
+        editFeatures(map = mapview() %>%
+                       leafem:::addRGB(x = starsRGB, r = r, g = g, b = b, editor = "leafpm"))
+      finshapefile <- edit_shp %>% st_transform(st_crs(mosaic))
+    }
+  } else if (!is.null(shp)) {
+    if (pixels < max_pixels) {
       edit_shp <- shp %>% st_transform(4326) %>%
         editFeatures(map = mapview(st_bbox(stars_object), color = 'red', lwd = 5, alpha = 0) %>%
-                       leafem:::addGeoRaster(x = stars_object,colorOptions = color_options,editor = "leafpm"))
+                       leafem:::addRGB(x = stars_object, r = r, g = g, b = b, editor = "leafpm"))
       finshapefile <- edit_shp %>% st_transform(st_crs(mosaic))
-      
+    } else {
+      edit_shp <- shp %>% st_transform(4326) %>%
+        editFeatures(map = mapview(st_bbox(stars_object), color = 'red', lwd = 5, alpha = 0) %>%
+                       leafem:::addRGB(x = starsRGB, r = r, g = g, b = b, editor = "leafpm"))
+      finshapefile <- edit_shp %>% st_transform(st_crs(mosaic))
+    }
+  } else {
+    if (!is.null(fieldShape) & nlyr(mosaic) == 1) {
+      if (pixels < max_pixels) {
+        stars_object[is.na(stars_object)] <- NA
+        edit_shp <- fieldShape %>% st_transform(4326) %>%
+          editFeatures(map = mapview() %>%
+                         leafem:::addGeoRaster(x = stars_object, colorOptions = leafem:::colorOptions(palette = color_options, na.color = "transparent"), editor = "leafpm"))
+        finshapefile <- edit_shp %>% st_transform(st_crs(mosaic))
+      } else {
+        stars_object[is.na(stars_object)] <- NA
+        edit_shp <- fieldShape %>% st_transform(4326) %>%
+          editFeatures(map = mapview() %>%
+                         leafem:::addGeotiff(stars_object[[1]], colorOptions = leafem:::colorOptions(palette = color_options, na.color = "transparent"), editor = "leafpm"))
+        finshapefile <- edit_shp %>% st_transform(st_crs(mosaic))
+      }
+    } else if (!is.null(shp)) {
+      if (pixels < max_pixels) {
+        edit_shp <- shp %>% st_transform(4326) %>%
+          editFeatures(map = mapview(st_bbox(stars_object), color = 'red', lwd = 5, alpha = 0) %>%
+                         leafem:::addGeoRaster(x = stars_object, colorOptions = color_options, editor = "leafpm"))
+        finshapefile <- edit_shp %>% st_transform(st_crs(mosaic))
+      } else {
+          edit_shp <- shp %>% st_transform(4326) %>%
+          editFeatures(map = mapview(st_bbox(stars_object), color = 'red', lwd = 5, alpha = 0) %>%
+                         leafem:::addGeotiff(stars_object[[1]], colorOptions = color_options, editor = "leafpm"))
+        finshapefile <- edit_shp %>% st_transform(st_crs(mosaic))
+      }
       print("End!")
       return(finshapefile)
-      }else{ 
-    
-    cat("\033[31m", "Error: fieldShape or shp do not exist", "\033[0m", "\n")
-  }
-
-  
+    } else { 
+      cat("\033[31m", "Error: fieldShape or shp do not exist", "\033[0m", "\n")
+    }
   }
 }
