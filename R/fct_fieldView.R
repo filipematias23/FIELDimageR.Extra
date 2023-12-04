@@ -182,31 +182,35 @@ fieldView <- function(mosaic = NULL,
                       layer.name = plotCol)
       }
     }
-    if (type == 1) {
-      sf_end <- sync(sf_end, m2)
-    }
-    if (type == 2) {
-      if (class(mosaic) %in% c("SpatRaster")) {
-        nBand <- nlyr(mosaic)
-      }
-      if (nBand == 1) {
-        if (pixels < max_pixels) {
-          sf_end <- m2 %>%leafem:::addGeoRaster(x = stars_object, colorOptions = leafem:::colorOptions(palette = colorOptions, na.color = "transparent"))
-          } else {
-          sf_end <- m2 %>%leafem:::addGeotiff(stars_object[[1]], colorOptions = leafem:::colorOptions(palette = colorOptions, na.color = "transparent"))
-          }
-      }
-      if (nBand > 2) {
-        if (pixels < max_pixels) {
-          sf_end <- m2 %>%
-            leafem:::addRGB(x = stars_object, r = r, g = g, b = b)
-          } else {
-          sf_end <- m2 %>%
-            leafem:::addRGB(x = starsRGB, r = r, g = g, b = b)
-          }
-      }
-    }
-  }
-  print("End!")
-  return(sf_end)
+   if (type == 1) {
+sf_end <- sync(sf_end, m2)
+}
+if (type == 2) {
+if (class(mosaic) %in% c("SpatRaster")) {
+nBand <- nlyr(mosaic)
+}
+if (nBand == 1) {
+if (pixels < max_pixels) {
+stars_object[is.na(stars_object)] <- NA
+sf_end <- m2 %>%leafem:::addGeoRaster(x = stars_object, colorOptions = leafem:::colorOptions(palette = colorOptions, na.color = "transparent"))
+} else {
+sf_end <- m2 %>%leafem:::addGeotiff(stars_object[[1]], colorOptions = leafem:::colorOptions(palette = colorOptions, na.color = "transparent"))
+}
+}
+if (nBand > 2) {
+if (pixels < max_pixels) {
+stars_object[is.na(stars_object)] <- 0
+sf_end <- m2 %>%
+leafem:::addRGB(x = stars_object, r = r, g = g, b = b)
+} else {
+starsRGB[is.na(starsRGB)] <- 0
+sf_end <- m2 %>%
+leafem:::addRGB(x = starsRGB, r = r, g = g, b = b)
+}
+}
+}
+}
+
+print("End!")
+return(sf_end)
 }
