@@ -47,20 +47,23 @@ fieldView <- function(mosaic = NULL,
                       seq_grid = NULL,
                       max_pixels = 100000000,
                       downsample = 5) {
+  
   print("Starting analysis ...")
-
+  
   if (is.null(mosaic)) {
     stop("The input 'mosaic' object is NULL.")
   }
-
-  if(class(mosaic)%in%c("RasterStack","RasterLayer","RasterBrick")){
-    mosaic<-terra::rast(mosaic)
+  
+  if (class(mosaic) %in% c("RasterStack", "RasterLayer", "RasterBrick")) {
+    mosaic <- terra::rast(mosaic)
   }
-
+  
   pixels <- prod(dim(mosaic))
-  if(pixels > max_pixels){
-    print("Your 'mosaic' is too large and downsapling is being applied.")
+  
+  if (pixels > max_pixels) {
+    print("Your 'mosaic' is too large, and downsampling is being applied.")
   }
+  
   if (pixels < max_pixels) {
     stars_object <- mosaic
     if (!inherits(stars_object, "stars")) {
@@ -69,105 +72,138 @@ fieldView <- function(mosaic = NULL,
         stars_object <- st_warp(stars_object, crs = 4326)
       }
     }
-  } else {
-    stars_object <- mosaic
-    if (!inherits(stars_object, "stars")) {
-      stars_object <- st_as_stars(mosaic, proxy = TRUE)
-      names(stars_object)<-"layer_name"
-      # stars_object <- read_stars(stars_object$layer_name, proxy = TRUE)
-      stars_object <- st_downsample(stars_object, n = downsample)
-    }
-  }
-
-  if(type==1){
-    if (!is.null(mosaic) && !editor) {
+    
+    if (type == 1 && !editor && pixels < max_pixels) {
       if (nlyr(mosaic) > 2) {
         stars_object[is.na(stars_object)] <- 0
-        m1 <- mapview() %>%
-          leafem:::addRGB(x = stars_object, r = r, g = g, b = b) 
+        m1 <- mapview()%>%
+          leafem:::addRGB(x = stars_object, r = r, g = g, b = b)
         sf_end <- m1
         gc()
       } else if (nlyr(mosaic) == 1) {
         stars_object[is.na(stars_object)] <- NA
         m1 <- mapview() %>%
-          leafem:::addGeoRaster(x = stars_object, colorOptions = leafem:::colorOptions(palette = colorOptions, na.color = "transparent")) %>%
+          leafem:::addGeoRaster(x = stars_object, colorOptions = leafem:::colorOptions(palette = colorOptions, na.color = "transparent"),group="mosaic") %>%
           addImageQuery(x = stars_object, type = "mousemove", digits = 2, layerId = names(mosaic)) %>%
           addLayersControl(overlayGroups = names(mosaic))
         sf_end <- m1
         gc()
       }
-    } else if (!is.null(mosaic) && editor) {  
-      if (nlyr(mosaic) > 2) {
+    }
+  } else {
+    stars_object <- st_as_stars(mosaic, proxy = TRUE)
+    starsRGB <- read_stars(stars_object[[1]], proxy = TRUE)
+    starsRGB <- st_downsample(starsRGB, n = downsample)
+    starsRGB[is.na(starsRGB)] <- 0
+    if (type == 1 && !editor && nlyr(mosaic) > 2) {
+      m1 <- mapview() %>%
+        leafem:::addRGB(x = starsRGB, r = r, g = g, b = b)
+      sf_end <- m1
+      gc()
+    } else if (type == 1 && !editor && nlyr(mosaic) == 1) {
+      m1 <- mapview() %>%
+        leafem:::addGeotiff(stars_object[[1]], colorOptions = leafem:::colorOptions(palette = colorOptions, na.color = "transparent")) 
+      sf_end <- m1
+      gc()
+    }
+  }
+  
+  if (editor) {
+    if (nlyr(mosaic) > 2) {
+      if (pixels < max_pixels) {
         stars_object[is.na(stars_object)] <- 0
         sf_shp <- mapview() %>%
-          leafem:::addRGB(x = stars_object, r = r, g = g, b = b) %>%
-          drawFeatures(editor = "leafpm")
+          leafem:::addRGB(x = stars_object, r = r, g = g, b = b)%>%drawFeatures(editor = "leafpm")
         gc()
         if (!is.null(sf_shp)) {
-          sf_obj <- sf_shp %>% st_transform(st_crs(mosaic))
-        } else {
-          print("No feature created ...")
-          sf_end <- NULL
-        }
-      } else if (nlyr(mosaic) == 1) {
-        if (nlyr(mosaic) == 1)
-  stars_object[is.na(stars_object)] <- NA
-sf_shp <- mapview() %>%
-  leafem:::addGeoRaster(x = stars_object, colorOptions = leafem:::colorOptions(palette = colorOptions, na.color = "transparent")) %>%
-          addImageQuery(x = stars_object, type = "mousemove", digits = 2, layerId = names(mosaic)) %>%
-          addLayersControl(overlayGroups = names(mosaic)) %>%
-          drawFeatures(editor = "leafpm") 
-        gc()
-        if (!is.null(sf_shp)) {
-          sf_obj <- sf_shp %>% st_transform(st_crs(mosaic))
+          sf_end <- sf_shp %>% st_transform(st_crs(mosaic))
         } else {
           print("No feature created ...")
           sf_end <- NULL
         }
       } else {
-        sf_end <- NULL
+        sf_shp <- mapview() %>%
+          leafem:::addRGB(x = starsRGB, r = r, g = g, b = b)%>%
+          drawFeatures(editor = "leafpm")
+        gc()
+        if (!is.null(sf_shp)) {
+          sf_end <- sf_shp %>% st_transform(st_crs(mosaic))
+        } else {
+          print("No feature created ...")
+          sf_end <- NULL
+        }
       }
-      sf_end <- sf_obj
-    }}
-  if(!is.null(fieldShape)){
-    if(type==1){m1<-sf_end}
-    m2<-mapview(fieldShape, 
-                col.regions = col_grid, 
-                alpha.regions=alpha_grid,
-                at = seq_grid)
-    if(!is.null(plotCol)){
-      if(!all(plotCol%in%colnames(fieldShape))){
+    } else if (nlyr(mosaic) == 1) {
+      if (pixels < max_pixels) {
+        stars_object[is.na(stars_object)] <- NA
+        sf_shp <- mapview() %>%
+          leafem:::addGeoRaster(x = stars_object, colorOptions = leafem:::colorOptions(palette = colorOptions, na.color = "transparent"))%>%
+          drawFeatures(editor = "leafpm") 
+        gc()
+        if (!is.null(sf_shp)) {
+          sf_end <- sf_shp %>% st_transform(st_crs(mosaic))
+        } else {
+          print("No feature created ...")
+          sf_end <- NULL
+        }
+      } else {
+        sf_shp <- mapview() %>%
+          leafem:::addGeotiff(stars_object[[1]], colorOptions = leafem:::colorOptions(palette = colorOptions, na.color = "transparent"))%>%
+          drawFeatures(editor = "leafpm") 
+        gc()
+        if (!is.null(sf_shp)) {
+          sf_end <- sf_shp %>% st_transform(st_crs(mosaic))
+        } else {
+          print("No feature created ...")
+          sf_end <- NULL
+        }
+      }
+    } else {
+      sf_end <- NULL
+    }
+  }
+  
+  if (!is.null(fieldShape)) {
+    m2 <- mapview(fieldShape, 
+                  col.regions = col_grid, 
+                  alpha.regions = alpha_grid,
+                  at = seq_grid)
+    if (!is.null(plotCol)) {
+      if (!all(plotCol %in% colnames(fieldShape))) {
         print("'plotCol' in not a column in fieldShape")
       }
-      if(all(plotCol%in%colnames(fieldShape))){
-        m2<-mapview(fieldShape,
-                    zcol=plotCol,
-                    legend=TRUE,
-                    alpha.regions=alpha_grid,
-                    col.regions = col_grid,
-                    at = seq_grid,
-                    layer.name=plotCol)
+      if (all(plotCol %in% colnames(fieldShape))) {
+        m2 <- mapview(fieldShape,
+                      zcol = plotCol,
+                      legend = TRUE,
+                      alpha.regions = alpha_grid,
+                      col.regions = col_grid,
+                      at = seq_grid,
+                      layer.name = plotCol)
       }
     }
-    if(type==1){
-      sf_end<-sync(m1,m2)
+    if (type == 1) {
+      sf_end <- sync(sf_end, m2)
     }
-    if(type==2){
-      if(class(mosaic)%in%c("SpatRaster")){
-        nBand<-nlyr(mosaic)
+    if (type == 2) {
+      if (class(mosaic) %in% c("SpatRaster")) {
+        nBand <- nlyr(mosaic)
       }
-      if(class(mosaic)%in%c("RasterStack")){
-        nBand<-length(mosaic1@layers)
+      if (nBand == 1) {
+        if (pixels < max_pixels) {
+          sf_end <- m2 %>%leafem:::addGeoRaster(x = stars_object, colorOptions = leafem:::colorOptions(palette = colorOptions, na.color = "transparent"))
+          } else {
+          sf_end <- m2 %>%leafem:::addGeotiff(stars_object[[1]], colorOptions = leafem:::colorOptions(palette = colorOptions, na.color = "transparent"))
+          }
       }
-      if (nBand == 1){
-        layer<-st_as_stars(mosaic)
-        sf_end<-mapview(layer,
-                        col.regions=colorOptions,
-                        layer.name="")+m2
-      }
-      if (nBand > 2){
-        mosaic<-raster::stack(mosaic)
-        sf_end<-viewRGB(mosaic)+m2
+      if (nBand > 2) {
+        if (pixels < max_pixels) {
+          sf_end <- m2 %>%
+            leafem:::addRGB(x = stars_object, r = r, g = g, b = b)
+          } else {
+          sf_end <- m2 %>%
+            leafem:::addRGB(x = starsRGB, r = r, g = g, b = b)
+          }
       }
     }
   }
