@@ -11,7 +11,7 @@ fieldShape_edit(
   r = 1,
   g = 2,
   b = 3,
-  color_options = NULL,
+  color_options = viridisLite::viridis,
   max_pixels = 1e+08,
   downsample = 5
 )
