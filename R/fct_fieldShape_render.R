@@ -27,24 +27,25 @@
 #' @importFrom mapedit editFeatures editMap
 #' @importFrom leafem addGeoRaster
 #' @importFrom dplyr mutate
+#' @importFrom lwgeom st_geod_azimuth
 #'
 #' @return A field plot shape file class "sf" & "data.frame".
 #'
 #' @export
 fieldShape_render <- function(mosaic,
-                               ncols, 
-                               nrows, 
-                               fieldData=NULL,
-                               fieldMap=NULL,
-                               PlotID=NULL,
-                               buffer=NULL,
-                               plot_size=NULL,
-                               r=1,
-                               g=2,
-                               b=3,
-                               color_options=viridisLite::viridis,
-                               max_pixels=100000000,
-                               downsample=5
+                              ncols, 
+                              nrows, 
+                              fieldData=NULL,
+                              fieldMap=NULL,
+                              PlotID=NULL,
+                              buffer=NULL,
+                              plot_size=NULL,
+                              r=1,
+                              g=2,
+                              b=3,
+                              color_options=viridisLite::viridis,
+                              max_pixels=100000000,
+                              downsample=5
 ) {
   print("Starting analysis ...")
   if (is.null(mosaic)) {
@@ -124,7 +125,6 @@ fieldShape_render <- function(mosaic,
     intercept <- matrix(linMod$coefficients[1, ], ncol = 2)
     geometry <- grids * parameters + intercept
     grid_shapefile <- st_sf(geometry, crs = st_crs(mosaic)) %>% mutate(ID = seq(1:length(geometry)))
-    
     rect_around_point <- function(x, xsize, ysize) {
       bbox <- st_bbox(x)
       bbox <- bbox + c(xsize / 2, ysize / 2, -xsize / 2, -ysize / 2)
@@ -146,20 +146,43 @@ fieldShape_render <- function(mosaic,
             points <- c(points, rectangles[[i]])
           }
           st_crs(points) <- st_crs(cen)
-          grid_shapefile <- st_as_sf(points)
-          grid_shapefile <- st_transform(grid_shapefile, st_crs(mosaic))
+          grid <- st_as_sf(points)
+          grid<-st_transform(grid, st_crs('EPSG:4326'))
+          b<-st_transform(grid_shapefile, crs = 4326)
+          rot = function(x) matrix(c(cos(x), sin(x), -sin(x), cos(x)), 2, 2)
+          extcoords1 <- st_coordinates(st_geometry(b))
+          pair<-st_sfc(st_point(c(extcoords1[,1][1],extcoords1[,2][1])), st_point(c(extcoords1[,1][4],extcoords1[,2][4])), crs = 4326)
+          rotRad<-as.numeric(st_geod_azimuth(pair))
+          ga = st_geometry(grid)
+          cga = st_centroid(ga)
+          grid_shapefile = (ga-cga) * rot(rotRad)+cga
+          st_crs(grid_shapefile) <- st_crs(mosaic)
         } else {
           cen <- suppressWarnings(st_centroid(grid_shapefile))
+          
           bbox_list <- lapply(st_geometry(cen), st_bbox)
           points_list <- lapply(bbox_list, st_as_sfc)
+          
           rectangles <- lapply(points_list, function(pt) rect_around_point(pt, plot_size[1], plot_size[2]))
+          
           points <- rectangles[[1]]
           for (i in 2:length(rectangles)) {
             points <- c(points, rectangles[[i]])
           }
+          
           st_crs(points) <- st_crs(cen)
-          grid_shapefile <- st_as_sf(points)
-          grid_shapefile <- st_transform(grid_shapefile, st_crs(mosaic))
+          grid <- st_as_sf(points)
+          st_crs(grid) <- st_crs(mosaic)
+          a<- st_transform(grid, crs = 4326)
+          b<-st_transform(grid_shapefile, crs = 4326)
+          rot = function(x) matrix(c(cos(x), sin(x), -sin(x), cos(x)), 2, 2)
+          extcoords1 <- st_coordinates(st_geometry(b))
+          pair<-st_sfc(st_point(c(extcoords1[,1][1],extcoords1[,2][1])), st_point(c(extcoords1[,1][4],extcoords1[,2][4])), crs = 4326)
+          rotRad<-as.numeric(st_geod_azimuth(pair))
+          ga = st_geometry(grid)
+          cga = st_centroid(ga)
+          grid_shapefile = (ga-cga) * rot(rotRad)+cga
+          st_crs(grid_shapefile) <- st_crs(mosaic)
         }
       }
     }
@@ -174,13 +197,11 @@ fieldShape_render <- function(mosaic,
         grid_shapefile <- st_transform(grid_shapefile, st_crs(mosaic))
       }
     }
-    grid_shapefile$PlotID <- seq(1, dim(grid_shapefile)[1])                          
+    if(!is.null(plot_size)){grid_shapefile<-st_as_sf(grid_shapefile)}
+    grid_shapefile$PlotID <- seq(1, dim(grid_shapefile)[1])
     print("Almost there ...")
     if (!is.null(fieldMap)) {
       id <- NULL
-      # for(i in 1:dim(fieldMap)[1]){
-      #   id<-c(id,rev(fieldMap[i,]))
-      # }
       for (i in dim(fieldMap)[1]:1) {
         id <- c(id, fieldMap[i,])
       }

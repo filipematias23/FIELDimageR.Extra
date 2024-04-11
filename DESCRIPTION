@@ -1,5 +1,5 @@
 Package: FIELDimageR.Extra
-Version: 0.0.3
+Version: 0.0.4
 Date: 2023-08-01
 Title: Package with new tools to support FIELDimageR software on evaluating GIS images from agriculture field trials. 
 Author: Popat Pawar & Filipe Matias
@@ -10,5 +10,4 @@ License: GPL (>= 2)
 URL: https://github.com/filipematias23/FIELDimageR.Extra
 BugReports: https://groups.google.com/forum/#!forum/fieldimager
 RoxygenNote: 7.2.3
-Imports: 
-    exactextractr
+Imports: exactextractr
