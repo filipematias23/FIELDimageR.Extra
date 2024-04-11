@@ -20,7 +20,7 @@
 #' @param max_pixels maximun pixels allowed before down sampling. Reducing size to accelerate analysis. Default = 100000000.
 #' @param downsample  numeric downsample reduction factor. Default = 5.
 #'  
-#' @importFrom sf st_crs st_bbox st_transform st_is_longlat st_crop st_make_grid st_cast st_coordinates st_buffer st_sf st_centroid
+#' @importFrom sf st_crs st_bbox st_transform st_is_longlat st_crop st_make_grid st_cast st_coordinates st_buffer st_sf st_centroid st_geometry
 #' @importFrom terra crop nlyr rast
 #' @importFrom stars write_stars st_warp st_as_stars 
 #' @importFrom mapview mapview
