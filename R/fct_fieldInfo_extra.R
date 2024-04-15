@@ -47,6 +47,6 @@ fieldInfo_extra <- function(mosaic,
   } else {
     colnames(plotInfo) <- paste0(names(mosaic), '_', fun)
   }
-  
-  return(plotInfo)
+  Out<-cbind(fieldShape, plotInfo[,!colnames(plotInfo)%in%c("ID"),drop=FALSE])
+  return(Out)
 }
