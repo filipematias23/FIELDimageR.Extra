@@ -40,7 +40,7 @@ fieldInfo_extra <- function(mosaic,
     fun <- c('mean', 'sum', 'max', 'min', 'mode', 'stdev', 'variance', 'coefficient_of_variation', 'majority', 'minority')
   }
   
-  plotInfo <- exactextractr::exact_extract(x = mosaic, y = fieldShape, fun = fun, progress = progress, force_df = TRUE)
+  plotInfo <- as.data.frame(exactextractr::exact_extract(x = mosaic, y = fieldShape, fun = fun, progress = progress, force_df = TRUE))
   
   if (length(fun) == 1) {
     colnames(plotInfo) <- paste0(names(mosaic), '_', fun)
