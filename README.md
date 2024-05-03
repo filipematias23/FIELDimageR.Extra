@@ -48,9 +48,12 @@
 > Now install R/FIELDimageR.Extra using the `install_github` function from [devtools](https://github.com/hadley/devtools) package. If necessary, use the argument [*type="source"*](https://www.rdocumentation.org/packages/ghit/versions/0.2.18/topics/install_github).
 
 ```r
-install.packages(c('terra','mapview','sf','stars','caret','mapedit','devtools'))
+# You may need other packages first:
+install.packages(c('terra','mapview','sf','stars','caret','mapedit','devtools',"dplyr","fields","leafem","leafsync","lwgeom"))
+
+# FIELDimageR:
 devtools::install_github("filipematias23/FIELDimageR.Extra")
-# devtools::install_github("OpenDroneMap/FIELDimageR")
+devtools::install_github("OpenDroneMap/FIELDimageR")
 
 ```
 
