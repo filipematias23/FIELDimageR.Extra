@@ -31,9 +31,9 @@ fieldInfo_extra <- function(mosaic,
     mosaic <- terra::rast(mosaic)
   }
   
-  valid_functions <- c("mean", "sum", "min", "max", "summary")
+  valid_functions <- c('mean', 'sum', 'max', 'min', 'mode', 'stdev', 'variance', 'coefficient_of_variation', 'majority', 'minority', "summary")
   if (!(fun %in% valid_functions)) {
-    stop("Use one of the functions from ('mean', 'sum', 'min', 'max', 'summary').")
+    stop("Use one of the functions from ('mean', 'sum', 'max', 'min', 'mode', 'stdev', 'variance', 'coefficient_of_variation', 'majority', 'minority', 'summary').")
   }
   
   if (fun == "summary") {
