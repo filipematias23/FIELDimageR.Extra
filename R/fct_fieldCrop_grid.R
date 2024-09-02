@@ -80,7 +80,7 @@ fieldCrop_grid <- function(mosaic,
     
     if (is.null(format) && is.null(plotID) && is.null(classifier)) {
       grid_polygon <- st_transform(grid_polygon, crs = st_crs(stars_object))
-      plot_raster <- st_crop(stars_object, grid_polygon)
+      plot_raster <- terra::crop(stars_object, grid_polygon,mask=TRUE)
       if (nBand > 2) {
         plot_raster <- st_warp(plot_raster, crs = st_crs(mosaic))
         plot_raster[is.na(plot_raster)] <- 0
@@ -96,7 +96,7 @@ fieldCrop_grid <- function(mosaic,
     } else if (format == ".jpg") {
       # Save the crop raster as a JPEG image
       grid_polygon <- st_transform(grid_polygon, crs = st_crs(mosaic))
-      plot_raster <- terra::crop(mosaic, grid_polygon)
+      plot_raster <- terra::crop(mosaic, grid_polygon, mask=TRUE)
       if (nBand > 2) {
         if(as.numeric(minmax(plot_raster[[1]])[[2]]>1)) {
           red<-plot_raster[[1]]/255
@@ -119,7 +119,7 @@ fieldCrop_grid <- function(mosaic,
       }} else {
         # Save the crop raster as a GeoTIFF image
         grid_polygon <- st_transform(grid_polygon, crs = st_crs(stars_object))
-        plot_raster <- st_crop(stars_object, grid_polygon)
+        plot_raster <- terra::crop(stars_object, grid_polygon,mask=TRUE)
         if (nBand > 2) {
           plot_raster <- st_warp(plot_raster, crs = st_crs(mosaic))
           plot_raster[is.na(plot_raster)] <- 0
