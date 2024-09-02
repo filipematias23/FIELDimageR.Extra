@@ -35,6 +35,11 @@ fieldCrop_grid <- function(mosaic,
   }
   
   nBand<-nlyr(mosaic)
+
+   if(is.null(classifier)){
+    fieldShape$result<-"cropped_plots"
+    classifier<-"result"
+  }
   
   if (!inherits(stars_object, "stars")) {
     stars_object <- st_as_stars(mosaic)
